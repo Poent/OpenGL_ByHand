@@ -1,5 +1,7 @@
 #include"VAO.h"
 
+//
+// \return: Vertex Array Object handler
 // Constructor that generates a VAO ID
 VAO::VAO()
 {

@@ -1,54 +1,35 @@
 #include <GL\glew.h>
 #include <GLFW\glfw3.h>
-#include <Header.h>
+#include <Callbacks.h>
+#include <VertexAttributes.h>
 #include <Windows.h>
 #include <shaderClass.h>
 #include <vao.h>
 #include <vbo.h>
 #include <ebo.h>
 
-//#define GLEW_STATIC  //tell it to use the static dll
+//#define GLEW_STATIC  //tell it to use the static dll // MOVED TO PROJECT SETTINGS
+// 
+// Learning Links
 // http://glew.sourceforge.net/basic.html
 // https://www.glfw.org/docs/3.3/quick_guide.html
-//error handler
 
 
-float points[] = {
-   -0.5f, -0.5f * float(sqrt(3)) / 3,  0.0f,		//Lower Left
-   0.5f,  -0.5f * float(sqrt(3)) / 3,  0.0f,		//upper corner
-   0.0f, 0.5f * float(sqrt(3)) * 2 / 3,  0.0f,			//Lower Right
+static void  cursorPositionCallback(GLFWwindow* window, double xPos, double yPos);
 
-  -0.5f / 2, 0.5f * float(sqrt(3)) / 6,  0.0f,			//Inner Left
-  0.5f / 2, 0.5f * float(sqrt(3)) / 6,  0.0f,			//Inner right
-  0.0f, -0.5f * float(sqrt(3)) / 3,  0.0f			//Inner Down
-};
-
-unsigned int indicies[] = {
-	0, 3, 5,
-	3, 2, 4,
-	5, 4, 1
-};
-
-float line[] = {
-	-0.5, 0.5,
-	0.5, -0.5
-};
-
-float newLine[];
-
-
-
+float mouseX, mouseY;
 
 int main() {
 
 
 	/*============ INITIALIZE STUFF ========================*/
-
+	//Try to init glfw, report failure if you can't (Should probably break here...)
 	glfwInit() ? std::cout << "glfwInit Success!\n" : std::cout << "glfwInit Failed!\n";
 	
-	//might use
+	//variable setup
 	double time = glfwGetTime();
 	float mod = 0.01;
+	
 
 
 	//setup our opengl window with the below parameters. 
@@ -60,22 +41,33 @@ int main() {
 		exit(EXIT_FAILURE);
 	}
 
+	glfwSwapInterval(1);
+
+
 	//Now that we've made the window, set it as the openGL Context.
+	//should still make it crash here like under GLFWwindow....
 	glfwMakeContextCurrent(window);
 	glewInit() == GLEW_OK ? std::cout << "GLEW_OK! Version: " << glewGetString(GLEW_VERSION) << "\n" : std::cout << "GLEW_NOT_OK!\n";
 
-	//setup callbacks
+	//setup callbacks - key callback only used to close window for now. 
 	glfwSetKeyCallback(window, key_callback);
+	//Need to do this properly. Cherno has a tutorial on wrapping openGL calls with a message checker... 
 	glfwSetErrorCallback(error_callback);
+	//setup window resize callback
+	glfwSetWindowSizeCallback(window, window_size_callback);
+	//setup cursor position callback
+	glfwSetCursorPosCallback(window, cursorPositionCallback);
+	//set default viewport Should move settings to define
 
 	glViewport(0, 0, 800, 800);
 
-	/*==========  END INITIALIZE STUFF ====================*/
+	/*==========  END DEFAULT INITIALIZE STUFF ====================*/
 
 
+	//setup our default shaders... basic and still learning
 	Shader shaderProgram("vert.shader", "frag.shader");
 
-	//generate Vertex Array Object and bind it
+	//We moved all the complex 
 	VAO VAO1;
 	VAO1.Bind();
 
@@ -107,18 +99,18 @@ int main() {
 	VAO2.Unbind();
 	VBO2.Unbind();
 
-
+	//VAO vaoArray[2];
 	
 
 
 	//PROGRAM HERE
 	while (!glfwWindowShouldClose(window)) {
 
-		float newPoints[9];
-		glLineWidth(2);
+		glLineWidth(4);
 		//set the background color
 		glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT); // clear the screen
+
 
 		shaderProgram.Activate();
 
@@ -134,34 +126,14 @@ int main() {
 		VAO2.Bind();
 		VBO2.Bind();
 
-		//std::wcout << line[0] << " " << line[1] << std::endl;
 		VBO2.Update(line, sizeof(line));
+		
+		#ifdef DEBUG
 		GLuint* vaoID = VAO1.GetID();
 		GLuint* vboID = VBO1.GetID();
 		std::cout << "VAO1 ID Memory Location: " << vaoID << " ID Value: " << *vaoID << std::endl;
 		std::cout << "VBO1 ID Memory Location: " << vboID << " ID Value: " << *vboID << std::endl;
-
-
-		//float fXOffset = 0.0f, fYOffset = 0.0f;
-		//ComputePositionOffsets(fXOffset, fYOffset);
-		//AdjustVertexData(fXOffset, fYOffset);
-
-		//glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		//glClear(GL_COLOR_BUFFER_BIT);
-
-		//glUseProgram(theProgram);
-
-		//glBindBuffer(GL_ARRAY_BUFFER, positionBufferObject);
-		//glEnableVertexAttribArray(0);
-		//glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
-
-		//glDrawArrays(GL_TRIANGLES, 0, 3);
-
-		//glDisableVertexAttribArray(0);
-		//glUseProgram(0);
-
-		//glutSwapBuffers();
-		//glutPostRedisplay();
+		#endif
 
 
 		glDrawArrays(GL_LINES,0 , 2);
@@ -172,15 +144,22 @@ int main() {
 
 		glfwSwapBuffers(window);
 
-		if (line[0] > 1 || line[0] < -1) {
-			mod *= -1;
-		}
-		line[0] += mod;
+		//if (line[0] > 1 || line[0] < -1) {
+		//	mod *= -1;
+		//}
+		//line[0] += mod;
+		//line[1] += mod;
+
+		line[0] = 2.0f * mouseX / 800 -1.0f;
+		line[1] = 1.0f - 2.0f * mouseY / 800;
+
+
+		//std::cout << line[0] << " : " << line[1] << std::endl;
 		
 		
-		Sleep(10);
+		//Sleep(10);
 		//take care of all the glfw events
-		glfwPollEvents(); // get window events (mouse, keypress, etc...)
+		glfwWaitEvents(); // get window events (mouse, keypress, etc...)
 
 	}
 
@@ -194,5 +173,14 @@ int main() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 	return 0;
+
+}
+
+static void cursorPositionCallback(GLFWwindow* window, double xPos, double yPos) {
+
+	//std::cout << xPos << " : " << yPos << std::endl;
+	mouseX = xPos;
+	mouseY = yPos;
+
 
 }

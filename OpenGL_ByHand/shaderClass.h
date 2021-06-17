@@ -22,12 +22,10 @@ class Shader
 
 };
 
+std::string get_file_contents(const char* filename);
 
+static unsigned int createShader(const std::string& vertexShader, const std::string& fragmentShader);
 
-
-
-
-
-
+static unsigned int CompileShader(unsigned int type, const std::string& source);
 
 #endif

@@ -153,10 +153,11 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ebo.h" />
-    <ClInclude Include="Header.h" />
+    <ClInclude Include="Callbacks.h" />
     <ClInclude Include="shaderClass.h" />
     <ClInclude Include="vao.h" />
     <ClInclude Include="vbo.h" />
+    <ClInclude Include="VertexAttributes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="frag.shader" />

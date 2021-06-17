@@ -35,7 +35,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Header.h">
+    <ClInclude Include="Callbacks.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="shaderClass.h">
@@ -48,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ebo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="VertexAttributes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
