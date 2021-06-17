@@ -1,0 +1,84 @@
+﻿'OpenGL_ByHand.exe' (Win32): Loaded 'D:\OneDrive - Gridspike\Programming\Projects_2019\OpenGL_ByHand\x64\Debug\OpenGL_ByHand.exe'. Symbols loaded.
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ntdll.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\kernel32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\KernelBase.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\user32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\win32u.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\gdi32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\gdi32full.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\msvcp_win.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ucrtbase.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\shell32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\opengl32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\msvcrt.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\advapi32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\sechost.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\rpcrt4.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\combase.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\msvcp140d.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140_1d.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\vcruntime140d.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ucrtbased.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\glu32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\imm32.dll'. 
+The thread 0x7440 has exited with code 0 (0x0).
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\uxtheme.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\winmm.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\dinput8.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\XInput1_4.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\cfgmgr32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\devobj.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\InputHost.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\SHCore.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\CoreMessaging.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\oleaut32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ws2_32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\propsys.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\WinTypes.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\bcryptprimitives.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\CoreUIComponents.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ntmarta.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
+'OpenGL_ByHand.exe' (Win32): Unloaded 'C:\Windows\System32\kernel.appcore.dll'
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\dwmapi.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\msctf.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Program Files\WIDCOMM\Bluetooth Software\BtMmHook.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ole32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\psapi.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\hid.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\setupapi.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\bcrypt.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\wintrust.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\crypt32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\msasn1.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\clbcatq.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\AppXDeploymentClient.dll'. 
+'OpenGL_ByHand.exe' (Win32): Unloaded 'C:\Windows\System32\AppXDeploymentClient.dll'
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\DriverStore\FileRepository\nv_dispi.inf_amd64_a494df49ba2f9f36\nvoglv64.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\wtsapi32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\version.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\cryptnet.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\cryptbase.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\windows.storage.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\wldp.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\shlwapi.dll'. 
+The thread 0x3db0 has exited with code 0 (0x0).
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\DXCore.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\nvspcap64.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\profapi.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\powrprof.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\umpdc.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\winsta.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\TextInputFramework.dll'. 
+The thread 0x2bd8 has exited with code 0 (0x0).
+The thread 0x2e00 has exited with code 0 (0x0).
+The thread 0x54cc has exited with code 0 (0x0).
+The thread 0xbf0 has exited with code 0 (0x0).
+The thread 0x50ac has exited with code 0 (0x0).
+The thread 0x6610 has exited with code 0 (0x0).
+The thread 0x5abc has exited with code 0 (0x0).
+The thread 0x1fb8 has exited with code 0 (0x0).
+The thread 0x39bc has exited with code 0 (0x0).
+The thread 0x5334 has exited with code 0 (0x0).
+The program '[0x2B5C] OpenGL_ByHand.exe' has exited with code 0 (0x0).

@@ -1,0 +1,40 @@
+	//copy the above array into the GPU Memory buffer using a Vertex Buffer Object
+	//(Create reference Containers)
+	unsigned int vao, vbo, ebo;   //setup the Vertex buffer array - could also use GLunit
+	
+	//generate the vao and vbo with only 1 object each
+	glGenVertexArrays(1, &vao);
+	glGenBuffers(1, &vbo);
+	glGenBuffers(1, &ebo);
+
+	//make the vao the current vertex array object by binding it
+	glBindVertexArray(vao);
+
+	//bind the vbo by specifying it's a GL_ARRAY_BUFFER
+	glBindBuffer(GL_ARRAY_BUFFER, vbo); 
+
+	//introduce the verticies into the vbo
+	glBufferData(GL_ARRAY_BUFFER, sizeof(points), points, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
+
+	//tell OpenGL the buffer layout.
+	//called once for each different type of data stored in the vertex
+	//starting index, number of attributes per vertex, type of data (float), normalized (force 0 to 1 value), stride - bytes between vertex. 
+	//This tells Opengl how to read the vbo
+	glVertexAttribPointer(0, 3, GL_FLOAT, false, /*8*/ sizeof(float) * 3, (void*)0);
+	//enable the Vertex Attribute so that OpenGL knows to use it. 
+	glEnableVertexAttribArray(0);
+
+	//bind the vao and vbo, order matters
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+
+
+
+	//pass the above compiled shaders into the createShader function, which will return a compiled shader program called "shader"
+
+
