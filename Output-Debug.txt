@@ -21,27 +21,27 @@
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ucrtbased.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\glu32.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\imm32.dll'. 
-The thread 0x6258 has exited with code 0 (0x0).
+The thread 0x4f24 has exited with code 0 (0x0).
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\uxtheme.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\winmm.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\dinput8.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\XInput1_4.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\cfgmgr32.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\devobj.dll'. 
-'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\dwmapi.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\InputHost.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\SHCore.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\CoreMessaging.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ws2_32.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\oleaut32.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\propsys.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\WinTypes.dll'. 
-'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\oleaut32.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\bcryptprimitives.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\CoreUIComponents.dll'. 
-'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
-'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ntmarta.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\kernel.appcore.dll'. 
 'OpenGL_ByHand.exe' (Win32): Unloaded 'C:\Windows\System32\kernel.appcore.dll'
+'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\dwmapi.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\msctf.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Program Files\WIDCOMM\Bluetooth Software\BtMmHook.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\ole32.dll'. 
@@ -63,7 +63,7 @@ The thread 0x6258 has exited with code 0 (0x0).
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\windows.storage.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\wldp.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\shlwapi.dll'. 
-The thread 0x5b30 has exited with code 0 (0x0).
+The thread 0x5f48 has exited with code 0 (0x0).
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\DXCore.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\nvspcap64.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\profapi.dll'. 
@@ -71,14 +71,12 @@ The thread 0x5b30 has exited with code 0 (0x0).
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\umpdc.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\winsta.dll'. 
 'OpenGL_ByHand.exe' (Win32): Loaded 'C:\Windows\System32\TextInputFramework.dll'. 
-The thread 0x4a14 has exited with code 0 (0x0).
-The thread 0x4d78 has exited with code 0 (0x0).
-The thread 0x144c has exited with code 0 (0x0).
-The thread 0x2b34 has exited with code 0 (0x0).
-The thread 0x3f4 has exited with code 0 (0x0).
-The thread 0x5d80 has exited with code 0 (0x0).
-The thread 0x3980 has exited with code 0 (0x0).
-The thread 0x4fe4 has exited with code 0 (0x0).
-The thread 0x2c10 has exited with code 0 (0x0).
-The thread 0x6eac has exited with code 0 (0x0).
-The program '[0x40FC] OpenGL_ByHand.exe' has exited with code 0 (0x0).
+The thread 0x4504 has exited with code 0 (0x0).
+The thread 0x5a50 has exited with code 0 (0x0).
+The thread 0x3bfc has exited with code 0 (0x0).
+The thread 0x5404 has exited with code 0 (0x0).
+The thread 0x369c has exited with code 0 (0x0).
+The thread 0x2228 has exited with code 0 (0x0).
+The thread 0x49b8 has exited with code 0 (0x0).
+The thread 0x54e4 has exited with code 0 (0x0).
+The program '[0x19E8] OpenGL_ByHand.exe' has exited with code 0 (0x0).

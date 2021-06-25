@@ -104,3 +104,8 @@ void Shader::Delete()
 {
 	glDeleteShader(shader);
 }
+
+GLuint Shader::getID() 
+{
+	return shader;
+}

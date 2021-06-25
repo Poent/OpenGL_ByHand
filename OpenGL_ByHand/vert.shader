@@ -1,10 +1,12 @@
 #version 410 core
 layout(location = 0) in vec3 aPos;
+layout(location = 1) in vec3 aColor;
 
-out vec4 vertexColor;
+out vec3 vertexColor;
 
 void main()
 {
-	gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);
-	vertexColor = vec4(0.8f, 0.3f, 0.02f, 1.0f);
+	gl_Position = vec4(aPos, 1.0);
+	//gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);  //opengl understands specific direct references to positional data. Can bed called explicity. 
+	vertexColor = aColor;
 }
