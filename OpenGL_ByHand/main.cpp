@@ -39,7 +39,7 @@ Change Log:
 static void  cursorPositionCallback(GLFWwindow* window, double xPos, double yPos);
 
 double mouseX, mouseY;
-float mod = 0.01;
+const int windowW = 800, windowH = 800;
 
 
 
@@ -58,7 +58,7 @@ int main() {
 
 
 	//setup our opengl window with the below parameters. 
-	GLFWwindow* window = glfwCreateWindow(800, 800, "Hello World", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(windowW, windowH, "Hello World", NULL, NULL);
 	if (!window)
 	{
 		std::cout << "failed to make the window!";
@@ -83,7 +83,7 @@ int main() {
 	//setup cursor position callback
 	glfwSetCursorPosCallback(window, cursorPositionCallback);
 	//set default viewport Should move value to a const uint... can then use window size callback. 
-	glViewport(0, 0, 800, 800);
+	glViewport(0, 0, windowW, windowH);
 
 #ifdef DEBUG
 	//get the max number of vertex attributes supported by the GPU
@@ -106,19 +106,30 @@ int main() {
 	std::cout << std::endl << "ourColor uniform location: " << vertexColorLocation << std::endl;
 #endif
 
-	//We moved all the complex 
+
+	shaderProgram.Activate(); //glUseProgram
+
+//    Testing uniforms
+	int location = glGetUniformLocation(shaderProgram.getID(), "u_Color");
+	std::cout << "Uniform u_Color Location: " << location << std::endl;
+
+	//glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f);
+	
 	VAO VAO1;
 	VAO1.Bind();
 
-	//Generate Vertex Buffer Object and link it to verts
+	// Generate Vertex Buffer Object and link it to verts
+	// Initialize the object with the set of verts we want to control. 
 	VBO VBO1(Triforce, sizeof(Triforce));
 
-	//Generate Element Buffer and link it to indices
+	// Generate Element Buffer and link it to indices
+	// Element buffers allow us to link the vertex of individual verticies together
+	// This allows us to reference and transform the verticies in specific ways. 
 	EBO EBO1(TriforceIndicies, sizeof(TriforceIndicies));
 
-	//link vbo to vao
-	VAO1.LinkVBO(VBO1, 0, 3, 6, 0);
-	VAO1.LinkVBO(VBO1, 1, 3, 6, 3);
+	// link vbo to vao
+	VAO1.LinkVBO(VBO1, 0, 3, 6, 0);	//position attribute
+	VAO1.LinkVBO(VBO1, 1, 3, 6, 3);	//color attribute
 
 	// unbind everything to prevent accidentally modifying them
 	
@@ -153,6 +164,9 @@ int main() {
 	BRICKEBO1.Unbind();
 
 
+	// ===============
+
+
 	//PROGRAM HERE
 	while (!glfwWindowShouldClose(window)) {
 
@@ -167,7 +181,7 @@ int main() {
 		glClear(GL_COLOR_BUFFER_BIT); // clear the screen
 
 		//set the specific Shader object as active. 
-		shaderProgram.Activate();
+		
 
 		//update specific shader uniforms
 		//vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor"); //cycle green
@@ -216,8 +230,8 @@ int main() {
 		//line[0] += mod;
 		//line[1] += mod;
 
-		line[0] = 2.0 * mouseX / 800 -1.0;
-		line[1] = 1.0 - 2.0 * mouseY / 800;
+		line[0] = 2.0 * mouseX / windowW -1.0;
+		line[1] = 1.0 - 2.0 * mouseY / windowH;
 
 
 		//std::cout << line[0] << " : " << line[1] << std::endl;

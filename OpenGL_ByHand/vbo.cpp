@@ -2,10 +2,14 @@
 #include <iostream>
 
 // Constructor that generates a Vertex Buffer Object and links it to vertices
+// Input an array of verticies and the size of that array. 
 VBO::VBO(GLfloat* vertices, GLsizeiptr size)
 {
+	// This is an openGL function to generate the buffer ID.
 	glGenBuffers(1, &ID);
+	// tells OpenGL the type and buffer ID we want to bind (work with)
 	glBindBuffer(GL_ARRAY_BUFFER, ID);
+	// Tell open GL to fill the bound buffer with our vertex data.
 	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
 
 #ifdef DEBUG
@@ -14,7 +18,7 @@ VBO::VBO(GLfloat* vertices, GLsizeiptr size)
 #endif
 }
 
-// Binds the VBO
+// Tells OpenGL to use this VBO (uses the internal object ID)
 void VBO::Bind()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, ID);
