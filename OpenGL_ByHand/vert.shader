@@ -7,6 +7,5 @@ out vec3 vertexColor;
 void main()
 {
 	gl_Position = vec4(aPos, 1.0);
-	//gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);  //opengl understands specific direct references to positional data. Can bed called explicity. 
 	vertexColor = aColor;
 }

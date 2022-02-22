@@ -19,10 +19,11 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile)
 
 }
 
-
+//This is a way for us to read the file contents and load it as a string.
 std::string get_file_contents(const char* filename) 
 {
 	std::ifstream in(filename, std::ios::binary);
+
 	if (in)
 	{
 		std::string contents;
