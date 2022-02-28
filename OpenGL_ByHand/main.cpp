@@ -125,6 +125,7 @@ int main() {
 	
 	GLOBJECT OBJECT1(Triforce, TriforceIndicies, 2, 3, 6);
 	OBJECT1.Unbind();
+	OBJECT1.GetID();
 
 	/*
 	VAO VAO1;
@@ -150,7 +151,7 @@ int main() {
 	EBO1.Unbind();
 	//*/
 
-	/**/
+	
 	//==== Initialize Line Draw Function ====
 	VAO VAO2;
 	VAO2.Bind();
@@ -163,6 +164,10 @@ int main() {
 	VBO2.Unbind();
 	//==== End Line Draw init
 
+	GLOBJECT OBJECT2(brick, brickEDO, 1, 3, 0);
+	OBJECT2.Unbind();
+
+	/*
 	VAO BRICKVAO1;
 	BRICKVAO1.Bind();
 
@@ -174,7 +179,7 @@ int main() {
 	BRICKVAO1.Unbind();
 	BRICKVBO1.Unbind();
 	BRICKEBO1.Unbind();
-	
+	//*/
 
 	// ===============
 
@@ -209,11 +214,15 @@ int main() {
 
 		OBJECT1.Unbind();
 
-		BRICKVAO1.Bind();
+		OBJECT1.GetID();
+
+		OBJECT2.Bind();
+		//BRICKVAO1.Bind();
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-		BRICKVAO1.Unbind();
+		OBJECT2.Unbind();
+		//BRICKVAO1.Unbind();
 
 		VAO2.Bind();
 		VBO2.Bind();
@@ -263,6 +272,17 @@ int main() {
 	//VBO1.Delete();
 	//EBO1.Delete();
 	OBJECT1.Delete();
+	OBJECT2.Delete();
+
+	/*
+	BRICKEBO1.Delete();
+	BRICKVAO1.Delete();
+	BRICKVBO1.Delete();
+	*/
+	VAO2.Delete();
+	VBO2.Delete();
+	
+
 
 
 

@@ -34,7 +34,6 @@ void VAO::LinkVBO(VBO& VBO, GLuint layout, int size, int stride, int offset)
 		(void*)( offset * sizeof(float))	// Offset specifies where the attribute begins in the array. 
 	);
 
-
 	glEnableVertexAttribArray(layout);
 	VBO.Unbind();
 }

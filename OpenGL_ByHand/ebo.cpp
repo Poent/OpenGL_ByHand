@@ -26,6 +26,10 @@ void EBO::Update(GLuint* indices, GLsizeiptr size)
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, indices, GL_STATIC_DRAW);
 }
 
+GLuint* EBO::GetID() {
+	return &ID;
+}
+
 // Unbinds the EBO
 void EBO::Unbind()
 {

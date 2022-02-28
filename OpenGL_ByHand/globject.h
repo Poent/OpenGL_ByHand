@@ -26,6 +26,7 @@ class GLOBJECT {
 		void Bind();
 		void Unbind();
 		void Update(GLfloat * vertices, GLuint * indices);
+		void GetID();
 		void Delete();
 
 
