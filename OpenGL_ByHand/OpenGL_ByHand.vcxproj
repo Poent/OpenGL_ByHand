@@ -146,6 +146,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="ebo.cpp" />
+    <ClCompile Include="globject.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="shaderClass.cpp" />
     <ClCompile Include="vao.cpp" />
@@ -154,6 +155,7 @@
   <ItemGroup>
     <ClInclude Include="ebo.h" />
     <ClInclude Include="Callbacks.h" />
+    <ClInclude Include="globject.h" />
     <ClInclude Include="shaderClass.h" />
     <ClInclude Include="vao.h" />
     <ClInclude Include="vbo.h" />

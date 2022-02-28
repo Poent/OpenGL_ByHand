@@ -7,6 +7,7 @@
 #include <vao.h>
 #include <vbo.h>
 #include <ebo.h>
+#include <globject.h>
 
 //#define GLEW_STATIC  //tell it to use the static dll // MOVED TO PROJECT SETTINGS
 // 
@@ -24,6 +25,13 @@ In Progress:
 
 
 Change Log:
+02/28/2022
+- Added globject.h and globject.cpp to create GLOBJECT (Mesh) class to combine VAO, VBO, and EBO... 
+- Not able to get it working though.. Should draw a multi-color triangle on the screen based
+off content of VertexAttributes.h (specifically Triforce and TriforceIndices). This worked before classifying.
+- Commented out lines 122-144 which were the original independent class calls...
+- Likely need to setup OpenGL error handling to identify issue... 
+
 
 06/21/21
 - introduced change log
@@ -115,6 +123,10 @@ int main() {
 
 	//glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f);
 	
+	GLOBJECT OBJECT1(Triforce, TriforceIndicies, 2, 3, 6);
+	OBJECT1.Unbind();
+
+	/*
 	VAO VAO1;
 	VAO1.Bind();
 
@@ -136,9 +148,9 @@ int main() {
 	VAO1.Unbind();
 	VBO1.Unbind();
 	EBO1.Unbind();
+	//*/
 
-
-
+	/**/
 	//==== Initialize Line Draw Function ====
 	VAO VAO2;
 	VAO2.Bind();
@@ -162,7 +174,7 @@ int main() {
 	BRICKVAO1.Unbind();
 	BRICKVBO1.Unbind();
 	BRICKEBO1.Unbind();
-
+	
 
 	// ===============
 
@@ -188,13 +200,14 @@ int main() {
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 
-		VAO1.Bind();
-
+		OBJECT1.Bind();
+		OBJECT1.Update(Triforce, TriforceIndicies);
+ 
 		////Draw the Triangle using the specified primitive
 		////glDrawArrays(GL_TRIANGLES, 0, 3); // replaced when implementing ebos
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
-		VAO1.Unbind();
+		OBJECT1.Unbind();
 
 		BRICKVAO1.Bind();
 
@@ -246,9 +259,13 @@ int main() {
 	}
 
 	//delete all the stuff we made
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
+	//VAO1.Delete();
+	//VBO1.Delete();
+	//EBO1.Delete();
+	OBJECT1.Delete();
+
+
+
 	shaderProgram.Delete();
 	
 	std::cout << "Goodbye world!";
