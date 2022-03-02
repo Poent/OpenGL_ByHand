@@ -2,6 +2,7 @@
 #include <iostream>
 
 
+
 // Constructor that generates a Vertex Buffer Object and links it to vertices
 // Input an array of verticies and the size of that array. 
 VBO::VBO(GLfloat* vertices, GLsizeiptr size)
@@ -25,21 +26,21 @@ VBO::VBO(GLfloat* vertices, GLsizeiptr size)
 //Leaving Bind in here... but should probably move it out for consistency
 VBO::VBO() {
 	// This is an openGL function to generate the buffer ID.
-	glGenBuffers(1, &ID);
+	GLCall(glGenBuffers(1, &ID));
 	// tells OpenGL the type and buffer ID we want to bind (work with)
-	glBindBuffer(GL_ARRAY_BUFFER, ID);
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, ID));
 }
 
 
 // Tells OpenGL to use this VBO (uses the internal object ID)
-void VBO::Bind()
+void VBO::Bind() const
 {
-	glBindBuffer(GL_ARRAY_BUFFER, ID);
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, ID));
 }
 
 void VBO::Update(GLfloat* vertices, GLsizeiptr size)
 {
-	glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW);
+	GLCall(glBufferData(GL_ARRAY_BUFFER, size, vertices, GL_STATIC_DRAW));
 
 #ifdef DEBUG
 	std::cout << "Update verts: " << vertices << std::endl;
@@ -48,9 +49,9 @@ void VBO::Update(GLfloat* vertices, GLsizeiptr size)
 }
 
 // Unbinds the VBO
-void VBO::Unbind()
+void VBO::Unbind() const
 {
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }
 
 // Deletes the VBO

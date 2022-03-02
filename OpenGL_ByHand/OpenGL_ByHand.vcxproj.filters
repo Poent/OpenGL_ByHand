@@ -36,6 +36,9 @@
     <ClCompile Include="globject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="glerror.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Callbacks.h">
@@ -57,6 +60,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="globject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="glerror.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

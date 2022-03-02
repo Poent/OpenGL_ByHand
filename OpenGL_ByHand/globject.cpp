@@ -32,7 +32,7 @@ GLOBJECT::GLOBJECT(
 void GLOBJECT::Bind() 
 {
 	VAO1.Bind();
-	//VBO1.Bind();
+	VBO1.Bind();
 	//EBO1.Bind();
 }
 

@@ -8,6 +8,11 @@
 #include <vbo.h>
 #include <ebo.h>
 #include <globject.h>
+#include <glerror.h>
+
+#define DEBUG
+//will only work in visual studio
+
 
 //#define GLEW_STATIC  //tell it to use the static dll // MOVED TO PROJECT SETTINGS
 // 
@@ -48,6 +53,13 @@ static void  cursorPositionCallback(GLFWwindow* window, double xPos, double yPos
 
 double mouseX, mouseY;
 const int windowW = 800, windowH = 800;
+
+
+
+
+
+
+
 
 
 
@@ -94,6 +106,15 @@ int main() {
 	glViewport(0, 0, windowW, windowH);
 
 #ifdef DEBUG
+	//POINT ERROR HANDLER HERE NOW THAT GL is setup
+	glEnable(GL_DEBUG_OUTPUT);
+	glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+
+	//Tell OpenGL what to do with error (send it to our function in glerror.h)
+	glDebugMessageCallback(GLDebugMessageCallback, NULL);
+#endif
+
+#ifdef DEBUG
 	//get the max number of vertex attributes supported by the GPU
 	//Interesting to know but we won't be bumping up against this anytime soon
 	//(opengl limits this to 16 by default). 
@@ -107,6 +128,7 @@ int main() {
 
 	//setup our default shaders... basic and still learning
 	Shader shaderProgram("vert.shader", "frag.shader");
+	shaderProgram.Activate(); //glUseProgram
 
 	//Setup uniforms now that the shaders are defined and activated
 #ifdef DEBUG
@@ -115,15 +137,18 @@ int main() {
 #endif
 
 
-	shaderProgram.Activate(); //glUseProgram
+	
 
 //    Testing uniforms
 	int location = glGetUniformLocation(shaderProgram.getID(), "u_Color");
 	std::cout << "Uniform u_Color Location: " << location << std::endl;
 
 	//glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f);
-	
+
 	GLOBJECT OBJECT1(Triforce, TriforceIndicies, 2, 3, 6);
+
+
+
 	OBJECT1.Unbind();
 	OBJECT1.GetID();
 
@@ -187,8 +212,12 @@ int main() {
 	//PROGRAM HERE
 	while (!glfwWindowShouldClose(window)) {
 
+		std::cout << "Entered Main Loop..." << std::endl;
+
 		float time = float(glfwGetTime());
 		float greenValue = (sin(time) / 2.0f) + 0.5f;
+
+		
 
 		//set the width of our glLines. This could be anywhere after GLFW and GLEW init functions. 
 		glLineWidth(4);
@@ -203,11 +232,17 @@ int main() {
 		//update specific shader uniforms
 		//vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor"); //cycle green
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
+		
+		shaderProgram.Activate(); //glUseProgram
 
-
+		std::cout << "Bind the Object..." << std::endl;
 		OBJECT1.Bind();
+
+		std::cout << "Update the object (OBJECT1)..." << std::endl;
 		OBJECT1.Update(Triforce, TriforceIndicies);
- 
+		
+
+
 		////Draw the Triangle using the specified primitive
 		////glDrawArrays(GL_TRIANGLES, 0, 3); // replaced when implementing ebos
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
@@ -215,6 +250,8 @@ int main() {
 		OBJECT1.Unbind();
 
 		OBJECT1.GetID();
+
+
 
 		OBJECT2.Bind();
 		//BRICKVAO1.Bind();
@@ -230,8 +267,8 @@ int main() {
 		VBO2.Update(line, sizeof(line));
 		
 		#ifdef DEBUG
-		GLuint* vaoID = VAO1.GetID();
-		GLuint* vboID = VBO1.GetID();
+		GLuint* vaoID = OBJECT1.VAO1.GetID();
+		GLuint* vboID = OBJECT1.VAO1.GetID();
 		std::cout << "VAO1 ID Memory Location: " << vaoID << " ID Value: " << *vaoID << std::endl;
 		std::cout << "VBO1 ID Memory Location: " << vboID << " ID Value: " << *vboID << std::endl;
 		std::cout << std::endl << " greenValue: " << greenValue << std::endl;
@@ -266,6 +303,8 @@ int main() {
 		glfwPollEvents(); // get window events (mouse, keypress, etc...)
 
 	}
+
+	std::cout << "STOPPING... Cleanup starting..." << std::endl;
 
 	//delete all the stuff we made
 	//VAO1.Delete();
