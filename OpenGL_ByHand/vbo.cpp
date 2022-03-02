@@ -33,7 +33,7 @@ VBO::VBO() {
 
 
 // Tells OpenGL to use this VBO (uses the internal object ID)
-void VBO::Bind() const
+void VBO::Bind()
 {
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, ID));
 }
@@ -49,7 +49,7 @@ void VBO::Update(GLfloat* vertices, GLsizeiptr size)
 }
 
 // Unbinds the VBO
-void VBO::Unbind() const
+void VBO::Unbind()
 {
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
 }

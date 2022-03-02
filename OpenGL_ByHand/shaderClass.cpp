@@ -11,15 +11,15 @@ Shader::Shader(const char* vertexFile, const char* fragmentFile)
 	std::string vertexCode = get_file_contents(vertexFile);
 	std::string fragmentCode = get_file_contents(fragmentFile);
 
-	//DEBUG (output shader source read from file)
-	//std::cout << vertexCode << std::endl;
-	//std::cout << fragmentCode << std::endl;
-
+	#ifdef DEBUG
+	std::cout << vertexCode << std::endl;
+	std::cout << fragmentCode << std::endl;
+	#endif
 	shader = createShader(vertexCode, fragmentCode);
 
 }
 
-//This is a way for us to read the file contents and load it as a string.
+//import file contents. 
 std::string get_file_contents(const char* filename) 
 {
 	std::ifstream in(filename, std::ios::binary);
@@ -53,7 +53,7 @@ static unsigned int createShader(const std::string& vertexShader, const std::str
 
 	//wrap up and link all shaders together into the shader program
 	glLinkProgram(program);
-	glValidateProgram(program);
+	GLCall(glValidateProgram(program));
 
 	//delete the now useless shader programs (since they're loaded into the GPU).
 	glDeleteShader(vs);

@@ -15,8 +15,8 @@ public:
 	VBO();
 
 
-	void Bind() const;
-	void Unbind() const;
+	void Bind();
+	void Unbind();
 	void Update(GLfloat* vertices, GLsizeiptr size);
 	void Delete();
 	GLuint* GetID();

@@ -175,3 +175,10 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
 #endif
     }
 }
+
+void GetActiveVBO()
+{
+    GLint activeVBO = 0;
+    glGetIntegerv(GL_ARRAY_BUFFER_BINDING, &activeVBO);
+    std::cout << "ACTIVE VBO: " << activeVBO << std::endl;
+}

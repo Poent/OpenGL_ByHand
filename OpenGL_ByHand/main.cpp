@@ -1,21 +1,20 @@
-#include <GL\glew.h>
-#include <GLFW\glfw3.h>
-#include <Callbacks.h>
-#include <VertexAttributes.h>
-#include <Windows.h>
+#include <GL\glew.h>		// automagically links system-specific OpenGL implementations (eg, from your video driver)
+#include <GLFW\glfw3.h>		// Cross platform window handler. will probably replace with lmgui later
+
+#include <Callbacks.h>		// lazy input handling
+#include <glerror.h>		// OpenGL error handling - because otherwise it sits silently screaming inside
+
+#include <VertexAttributes.h> //contains manual vertices (until we handle loading meshes)
+#include <vao.h>		// VAO class
+#include <vbo.h>		// VBO class
+#include <ebo.h>		// EBO class
+#include <globject.h>	//Tries (and failes) to combine the above classes into a single class...
+
 #include <shaderClass.h>
-#include <vao.h>
-#include <vbo.h>
-#include <ebo.h>
-#include <globject.h>
-#include <glerror.h>
 
 #define DEBUG
-//will only work in visual studio
 
 
-//#define GLEW_STATIC  //tell it to use the static dll // MOVED TO PROJECT SETTINGS
-// 
 // Learning Links
 // http://glew.sourceforge.net/basic.html
 // https://www.glfw.org/docs/3.3/quick_guide.html
@@ -28,12 +27,20 @@ In Progress:
 - Specifically looking to update attribs from just pos - will eventually include position, color, and texture coord (S, T, R). 
 - once we can draw a texture on a single square we'll transform that squares position and start thinking about how we handle multiples on the screen
 
-
 Change Log:
+
+03/01/2022
+- Implemented OpenGL error handling with both glGetError and GLDebugMessageCallback
+-- glGetError is legacy but compatible with older versions of OpenGL.
+-- GLDebugMessageCallback is more robust but does not work on OpenGL versins 4.3 or earlier
+- Based on error messages corrected the following:
+-- glLineWidth(x); x must be <= 1. I prefer the thick lines but will need to replace with a poly
+-- globject::bind had VBO.Bind() commented out. Thought this was the cause of my issue but did not change anything. 
+-- 
+
 02/28/2022
-- Added globject.h and globject.cpp to create GLOBJECT (Mesh) class to combine VAO, VBO, and EBO... 
-- Not able to get it working though.. Should draw a multi-color triangle on the screen based
-off content of VertexAttributes.h (specifically Triforce and TriforceIndices). This worked before classifying.
+- Added globject.h and globject.cpp to create GLOBJECT class to combine VAO, VBO, and EBO... 
+- Not able to get it working though.. Should draw a multi-color triangle on the screen based off content of VertexAttributes.h (specifically Triforce and TriforceIndices). This worked before classifying.
 - Commented out lines 122-144 which were the original independent class calls...
 - Likely need to setup OpenGL error handling to identify issue... 
 
@@ -48,36 +55,20 @@ off content of VertexAttributes.h (specifically Triforce and TriforceIndices). T
 */
 
 
-//will move this to callback header later. still playing. 
+
+// Mouse position stuff. Just using it for testing. 
 static void  cursorPositionCallback(GLFWwindow* window, double xPos, double yPos);
-
-double mouseX, mouseY;
+double mouseX, mouseY; 
 const int windowW = 800, windowH = 800;
-
-
-
-
-
-
-
-
 
 
 int main() {
 
 
 	/*============ INITIALIZE STUFF ========================*/
-	//Try to init glfw, report failure if you can't (Should probably break here...)
+	//Try to initialize glfw, report failure if you can't (Should probably break here...)
 	glfwInit() ? std::cout << "glfwInit Success!\n" : std::cout << "glfwInit Failed!\n";
 	
-	//variable setup
-
-
-
-	
-
-
-	//setup our opengl window with the below parameters. 
 	GLFWwindow* window = glfwCreateWindow(windowW, windowH, "Hello World", NULL, NULL);
 	if (!window)
 	{
@@ -86,24 +77,19 @@ int main() {
 		exit(EXIT_FAILURE);
 	}
 
+
+	glfwMakeContextCurrent(window);
 	glfwSwapInterval(1); //limit draw to screen refresh rate. 
 
 
-	//Now that we've made the window, set it as the openGL Context.
-	//should still make it crash here like under GLFWwindow....
-	glfwMakeContextCurrent(window);
 	glewInit() == GLEW_OK ? std::cout << "GLEW_OK! Version: " << glewGetString(GLEW_VERSION) << "\n" : std::cout << "GLEW_NOT_OK!\n";
 
 	//setup callbacks - key callback only used to close window for now. 
 	glfwSetKeyCallback(window, key_callback);
-	//Need to do this properly. Cherno has a tutorial on wrapping openGL calls with a message checker... 
-	glfwSetErrorCallback(error_callback);
-	//setup window resize callback
-	glfwSetWindowSizeCallback(window, window_size_callback);
-	//setup cursor position callback
-	glfwSetCursorPosCallback(window, cursorPositionCallback);
-	//set default viewport Should move value to a const uint... can then use window size callback. 
-	glViewport(0, 0, windowW, windowH);
+	glfwSetWindowSizeCallback(window, window_size_callback);		//setup window resize callback
+	glfwSetCursorPosCallback(window, cursorPositionCallback);		//setup cursor position callback
+	
+	glViewport(0, 0, windowW, windowH); //set default viewport Should move value to a const uint... can then use window size callback. 
 
 #ifdef DEBUG
 	//POINT ERROR HANDLER HERE NOW THAT GL is setup
@@ -130,26 +116,25 @@ int main() {
 	Shader shaderProgram("vert.shader", "frag.shader");
 	shaderProgram.Activate(); //glUseProgram
 
-	//Setup uniforms now that the shaders are defined and activated
-#ifdef DEBUG
+	/*
+	//playing with  uniforms now that the shaders are defined and activated
 	int vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor");
 	std::cout << std::endl << "ourColor uniform location: " << vertexColorLocation << std::endl;
-#endif
-
-
-	
-
-//    Testing uniforms
 	int location = glGetUniformLocation(shaderProgram.getID(), "u_Color");
 	std::cout << "Uniform u_Color Location: " << location << std::endl;
 
 	//glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f);
+	*/
 
+
+
+	// Trying to replace VAO1 (below) with our combnined buffer object
+	// This object is supposed to combine all VAO, VBO, and EBO setu
+	// ACTIVE PROBLEM, CURRENTLY NOT WORKING
 	GLOBJECT OBJECT1(Triforce, TriforceIndicies, 2, 3, 6);
-
-
-
 	OBJECT1.Unbind();
+
+
 	OBJECT1.GetID();
 
 	/*
@@ -176,21 +161,20 @@ int main() {
 	EBO1.Unbind();
 	//*/
 
-	
+	//Working use of VAO, VBO outside of GLOBJECT
 	//==== Initialize Line Draw Function ====
-	VAO VAO2;
-	VAO2.Bind();
+	
+	VAO VAO2;							// Generate Vertex Array Object (This is nothing but a state wrapper)
+	VAO2.Bind();						// Set that buffer as active
+	VBO VBO2(line, sizeof(line));		// Initialize the VBO with actual data
 
-	VBO VBO2(line, sizeof(line));
+	VAO2.LinkVBO(VBO2, 0, 2, 0, 0);		//link the VBO to the VAO and tell it how to read the data
 
-	VAO2.LinkVBO(VBO2, 0, 2, 0, 0);
-
-	VAO2.Unbind();
-	VBO2.Unbind();
+	VAO2.Unbind();						//cleanup after setup
+	VBO2.Unbind();						//cleanup after setup
 	//==== End Line Draw init
 
-	GLOBJECT OBJECT2(brick, brickEDO, 1, 3, 0);
-	OBJECT2.Unbind();
+
 
 	/*
 	VAO BRICKVAO1;
@@ -218,28 +202,26 @@ int main() {
 		float greenValue = (sin(time) / 2.0f) + 0.5f;
 
 		
+		glClearColor(0.2f, 0.2f, 0.8f, 1.0f);		// set the background color
+		glClear(GL_COLOR_BUFFER_BIT);				// clear the screen
+		glLineWidth(1);								// Must be < 1.0. Will need to make a poly for thick lines...
 
-		//set the width of our glLines. This could be anywhere after GLFW and GLEW init functions. 
-		glLineWidth(4);
+		shaderProgram.Activate(); //glUseProgram
 
-		//set the background color
-		glClearColor(0.2f, 0.2f, 0.8f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT); // clear the screen
-
-		//set the specific Shader object as active. 
-		
 
 		//update specific shader uniforms
 		//vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor"); //cycle green
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
-		
-		shaderProgram.Activate(); //glUseProgram
 
 		std::cout << "Bind the Object..." << std::endl;
-		OBJECT1.Bind();
+		//OBJECT1.Bind();
+		OBJECT1.VAO1.Bind();
+		OBJECT1.VBO1.Bind();
 
+		GetActiveVBO();
 		std::cout << "Update the object (OBJECT1)..." << std::endl;
-		OBJECT1.Update(Triforce, TriforceIndicies);
+		OBJECT1.VBO1.Update( Triforce, sizeof(TriforceIndicies) );
+		//OBJECT1.Update(Triforce, TriforceIndicies);
 		
 
 
@@ -249,35 +231,17 @@ int main() {
 
 		OBJECT1.Unbind();
 
-		OBJECT1.GetID();
 
 
 
-		OBJECT2.Bind();
-		//BRICKVAO1.Bind();
 
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-
-		OBJECT2.Unbind();
-		//BRICKVAO1.Unbind();
 
 		VAO2.Bind();
 		VBO2.Bind();
-
 		VBO2.Update(line, sizeof(line));
-		
-		#ifdef DEBUG
-		GLuint* vaoID = OBJECT1.VAO1.GetID();
-		GLuint* vboID = OBJECT1.VAO1.GetID();
-		std::cout << "VAO1 ID Memory Location: " << vaoID << " ID Value: " << *vaoID << std::endl;
-		std::cout << "VBO1 ID Memory Location: " << vboID << " ID Value: " << *vboID << std::endl;
-		std::cout << std::endl << " greenValue: " << greenValue << std::endl;
-		#endif
-
-
+		GetActiveVBO();
 		glDrawArrays(GL_LINES,0 , 2);
 
-		
 		VAO2.Unbind();
 		VBO2.Unbind();
 
@@ -311,7 +275,7 @@ int main() {
 	//VBO1.Delete();
 	//EBO1.Delete();
 	OBJECT1.Delete();
-	OBJECT2.Delete();
+
 
 	/*
 	BRICKEBO1.Delete();
@@ -324,7 +288,7 @@ int main() {
 
 
 
-
+	//busted.... triggers opengl breakpoint.. havn't looked into yet. 
 	shaderProgram.Delete();
 	
 	std::cout << "Goodbye world!";
@@ -334,6 +298,9 @@ int main() {
 
 }
 
+
+
+// need to mobe this to Callbacks.h
 static void cursorPositionCallback(GLFWwindow* window, double xPos, double yPos) {
 
 	//std::cout << xPos << " : " << yPos << std::endl;

@@ -1,15 +1,13 @@
 #include <globject.h>
 
 
-GLOBJECT::GLOBJECT(	
-	GLfloat* vertices,
-	GLuint* indices,
-	int attributeCount,
-	int size,
-	int stride)
+GLOBJECT::GLOBJECT(	GLfloat* vertices, GLuint* indices, int attributeCount,	int size, int stride)
 {
 	std::cout << "VAO1 ID: " << VAO1.GetID() << std::endl;
 	VAO1.Bind();
+
+	GetActiveVBO();
+
 	VBO VBO1(vertices, sizeof(vertices));
 	
 
@@ -31,8 +29,8 @@ GLOBJECT::GLOBJECT(
 
 void GLOBJECT::Bind() 
 {
-	VAO1.Bind();
-	VBO1.Bind();
+	GLCall(VAO1.Bind());
+	GLCall(VBO1.Bind());
 	//EBO1.Bind();
 }
 
