@@ -24,13 +24,14 @@ VBO::VBO(GLfloat* vertices, GLsizeiptr size)
 //We're adding this so we can create the GLOBJECT class. 
 //It allows us to construct the object first and THEN update it. 
 //Leaving Bind in here... but should probably move it out for consistency
+///*
 VBO::VBO() {
 	// This is an openGL function to generate the buffer ID.
 	GLCall(glGenBuffers(1, &ID));
 	// tells OpenGL the type and buffer ID we want to bind (work with)
 	GLCall(glBindBuffer(GL_ARRAY_BUFFER, ID));
 }
-
+//*/
 
 // Tells OpenGL to use this VBO (uses the internal object ID)
 void VBO::Bind()

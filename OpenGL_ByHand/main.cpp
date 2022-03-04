@@ -131,13 +131,14 @@ int main() {
 	// Trying to replace VAO1 (below) with our combnined buffer object
 	// This object is supposed to combine all VAO, VBO, and EBO setu
 	// ACTIVE PROBLEM, CURRENTLY NOT WORKING
+	std::cout << "INIT OBJECT1..." << std::endl;
 	GLOBJECT OBJECT1(Triforce, TriforceIndicies, 2, 3, 6);
 	OBJECT1.Unbind();
 
 
 	OBJECT1.GetID();
 
-	/*
+	
 	VAO VAO1;
 	VAO1.Bind();
 
@@ -226,10 +227,11 @@ int main() {
 
 
 		////Draw the Triangle using the specified primitive
-		////glDrawArrays(GL_TRIANGLES, 0, 3); // replaced when implementing ebos
+		//glDrawArrays(GL_TRIANGLES, 0, 3); // replaced when implementing ebos
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
 		OBJECT1.Unbind();
+
 
 
 

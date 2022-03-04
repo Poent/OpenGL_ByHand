@@ -8,9 +8,10 @@ GLOBJECT::GLOBJECT(	GLfloat* vertices, GLuint* indices, int attributeCount,	int 
 
 	GetActiveVBO();
 
-	VBO VBO1(vertices, sizeof(vertices));
-	
+	VBO1 = VBO(vertices, sizeof(vertices));
 
+	EBO1 = EBO(indices, sizeof(indices));
+	GetActiveVBO();
 	for (int i = 0; i < attributeCount; i++)
 	{
 		std::cout
@@ -23,7 +24,7 @@ GLOBJECT::GLOBJECT(	GLfloat* vertices, GLuint* indices, int attributeCount,	int 
  		VAO1.LinkVBO(VBO1, i, size, stride, i * size);
 	}
 
-	EBO EBO1(indices, sizeof(indices));
+	
 
 }
 
