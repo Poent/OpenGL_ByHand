@@ -151,14 +151,14 @@ int main() {
 
 
 
-	GLOBJECT OBJECT1(rect, elements, 1, 3, 5);
-	OBJECT1.Unbind();
+	//GLOBJECT OBJECT1(rect, elements, 1, 3, 5);
+	//OBJECT1.Unbind();
 
+	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), 3, 5);
 
-
-	/*
 	
-	VAO VAO1;
+	/*
+	VAO VAO1;  //default constructor makes the ID
 	VAO1.Bind();
 
 	// Generate Vertex Buffer Object and link it to verts
@@ -230,16 +230,19 @@ int main() {
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 
+		TESTOBJECT.Bind();
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		TESTOBJECT.Unbind();
 
-		OBJECT1.Bind();
+		//OBJECT1.Bind();
 		//parameters are:
 		//		Mode (The type of primative to render)
 		//      Count (number of elemtns to be rendered)
 		//      Type (type of values in the indicies) 
 		//      and pointer to the indicies (null pointer valid). 
-		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+		//glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
-		OBJECT1.Unbind();
+		//OBJECT1.Unbind();
 
 		/*
 		VAO1.Bind();
@@ -276,7 +279,7 @@ int main() {
 	//VAO1.Delete();
 	//VBO1.Delete();
 	//EBO1.Delete();
-	OBJECT1.Delete();
+	//OBJECT1.Delete();
 
 
 	/*
