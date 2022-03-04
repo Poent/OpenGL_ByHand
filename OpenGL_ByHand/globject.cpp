@@ -2,12 +2,13 @@
 #include <glerror.h>
 
 
-GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndices, GLsizeiptr eind_size, int numAttributes, int stride)
+GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndices, GLsizeiptr eind_size,int attributeCount, int attributeSize, int stride)
 {
-	glGenVertexArrays(1, &vao_id);
-	glBindVertexArray(vao_id);
+	
+	glGenVertexArrays(1, &vao_id);				//Setup Vertex Array ID
+	glBindVertexArray(vao_id);					//Bind the Vertex Array
 
-	glGenVertexArrays(1, &vbo_id);
+	glGenVertexArrays(1, &vbo_id);				//Setup the Vertex Buffer ID
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
 	glBufferData(GL_ARRAY_BUFFER, vert_size, vertices, GL_STATIC_DRAW);
 
@@ -16,18 +17,26 @@ GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndic
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, eind_size, elementIndices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-	for (int i = 0; i < numAttributes; i++)
-	{
+	for (int i = 0; i < attributeCount; i++)
+	{	
+		std::cout << "Linking Attribute: " << i << std::endl;
+		std::cout <<
+			"index: " << i << std::endl <<
+			"attributeSize: " << attributeSize << std::endl <<
+			"stride: " << stride << std::endl <<
+			"Offset: " << static_cast<unsigned long long>(stride) * i * sizeof(float) << std::endl;
+
 		GLCall(glVertexAttribPointer(
 			i,											// index ID of the Attribute we're specifying
-			numAttributes,								// Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4
+			attributeSize,								// Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4
 			GL_FLOAT,									// Specify attribute component types
 			GL_FALSE,									// Specifies if the data should be "Normalized"
 			sizeof(float) * stride,						// Byte offset between consecutive matching attributes within the array
-			(void*)(stride * i * sizeof(float))		// Offset specifies where the attribute begins in the array. 
+			(void*)(stride * i * sizeof(float)/2)			// Offset specifies where the attribute begins in the array. 
 		));
 
 		GLCall(glEnableVertexAttribArray(i));
+
 	}
 
 }

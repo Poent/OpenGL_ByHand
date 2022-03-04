@@ -137,10 +137,10 @@ int main() {
 
 
 	float rect[] = {
-	-0.5f,  0.5f, 1.0f, 0.0f, 0.0f, // Top-left
-	 0.5f,  0.5f, 0.0f, 1.0f, 0.0f, // Top-right
-	 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, // Bottom-right
-	-0.5f, -0.5f, 1.0f, 1.0f, 1.0f  // Bottom-left
+	-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // Top-left
+	 0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // Top-right
+	 0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // Bottom-right
+	-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f  // Bottom-left
 	};
 
 
@@ -154,10 +154,12 @@ int main() {
 	//GLOBJECT OBJECT1(rect, elements, 1, 3, 5);
 	//OBJECT1.Unbind();
 
-	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), 3, 5);
+	GLOBJECT OBJECT1(Triforce, sizeof(Triforce), TriforceIndicies, sizeof(TriforceIndicies), 2, 3, 6);
+	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), 2, 3, 6);
+
 
 	
-	/*
+	/* using vao, vbo, ebo classes
 	VAO VAO1;  //default constructor makes the ID
 	VAO1.Bind();
 
@@ -210,9 +212,9 @@ int main() {
 	BRICKEBO1.Unbind();
 	//*/
 
-
+	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) {
-		std::cout << "Entered Main Loop..." << std::endl;
+
 
 		float time = float(glfwGetTime());
 		float greenValue = (sin(time) / 2.0f) + 0.5f;
@@ -233,6 +235,10 @@ int main() {
 		TESTOBJECT.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		TESTOBJECT.Unbind();
+
+		OBJECT1.Bind();
+		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
+		OBJECT1.Unbind();
 
 		//OBJECT1.Bind();
 		//parameters are:
@@ -256,7 +262,7 @@ int main() {
 		VAO2.Bind();
 		VBO2.Bind();
 		VBO2.Update(line, sizeof(line));
-		GetActiveVBO();
+		//GetActiveVBO();
 		glDrawArrays(GL_LINES,0 , 2);
 
 		VAO2.Unbind();
@@ -294,7 +300,7 @@ int main() {
 
 
 	//busted.... triggers opengl breakpoint.. havn't looked into yet. 
-	shaderProgram.Delete();
+	//shaderProgram.Delete();
 	
 	std::cout << "Goodbye world!";
 	glfwDestroyWindow(window);
