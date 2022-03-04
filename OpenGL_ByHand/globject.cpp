@@ -6,12 +6,12 @@ GLOBJECT::GLOBJECT(	GLfloat* vertices, GLuint* indices, int attributeCount,	int 
 	std::cout << "VAO1 ID: " << VAO1.GetID() << std::endl;
 	VAO1.Bind();
 
-	GetActiveVBO();
-
 	VBO1 = VBO(vertices, sizeof(vertices));
 
+	
 	EBO1 = EBO(indices, sizeof(indices));
-	GetActiveVBO();
+
+
 	for (int i = 0; i < attributeCount; i++)
 	{
 		std::cout
@@ -24,14 +24,12 @@ GLOBJECT::GLOBJECT(	GLfloat* vertices, GLuint* indices, int attributeCount,	int 
  		VAO1.LinkVBO(VBO1, i, size, stride, i * size);
 	}
 
-	
-
 }
 
 void GLOBJECT::Bind() 
 {
 	GLCall(VAO1.Bind());
-	GLCall(VBO1.Bind());
+	//GLCall(VBO1.Bind());
 	//EBO1.Bind();
 }
 
