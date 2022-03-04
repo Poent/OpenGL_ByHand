@@ -112,7 +112,9 @@ int main() {
 	/*==========  END DEFAULT INITIALIZE STUFF ====================*/
 
 
-	//setup our default shaders... basic and still learning
+	/*==========  Start OpenGL state/Buffer creation  =============*/
+
+	//setup our shader object
 	Shader shaderProgram("vert.shader", "frag.shader");
 	shaderProgram.Activate(); //glUseProgram
 
@@ -191,12 +193,8 @@ int main() {
 	BRICKEBO1.Unbind();
 	//*/
 
-	// ===============
 
-
-	//PROGRAM HERE
 	while (!glfwWindowShouldClose(window)) {
-
 		std::cout << "Entered Main Loop..." << std::endl;
 
 		float time = float(glfwGetTime());
@@ -214,15 +212,16 @@ int main() {
 		//vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor"); //cycle green
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
-		std::cout << "Bind the Object..." << std::endl;
+
 		//OBJECT1.Bind();
 		OBJECT1.VAO1.Bind();
 		OBJECT1.VBO1.Bind();
 
 		GetActiveVBO();
 		std::cout << "Update the object (OBJECT1)..." << std::endl;
-		OBJECT1.VBO1.Update( Triforce, sizeof(TriforceIndicies) );
 		//OBJECT1.Update(Triforce, TriforceIndicies);
+		OBJECT1.VBO1.Update( Triforce, sizeof(TriforceIndicies) );
+
 		
 
 
@@ -247,24 +246,12 @@ int main() {
 		VAO2.Unbind();
 		VBO2.Unbind();
 
-
-
-		//if (line[0] > 1 || line[0] < -1) {
-		//	mod *= -1;
-		//}
-		//line[0] += mod;
-		//line[1] += mod;
-
 		line[0] = 2.0 * mouseX / windowW -1.0;
 		line[1] = 1.0 - 2.0 * mouseY / windowH;
 
 
-		//std::cout << line[0] << " : " << line[1] << std::endl;
 
 		
-		
-		//Sleep(10);
-		//swap buffer and poll IO events
 		glfwSwapBuffers(window);
 		glfwPollEvents(); // get window events (mouse, keypress, etc...)
 
