@@ -1,63 +1,82 @@
 #include <globject.h>
+#include <glerror.h>
 
 
-GLOBJECT::GLOBJECT(	GLfloat* vertices, GLuint* indices, int attributeCount,	int size, int stride)
+GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndices, GLsizeiptr eind_size,int attributeCount, int attributeSize, int stride)
 {
-	std::cout << "VAO1 ID: " << VAO1.GetID() << std::endl;
-	VAO1.Bind();
-
-	GetActiveVBO();
-
-	VBO1 = VBO(vertices, sizeof(vertices));
-
-	EBO1 = EBO(indices, sizeof(indices));
-	GetActiveVBO();
-	for (int i = 0; i < attributeCount; i++)
-	{
-		std::cout
-			<< "i: " << i
-			<< " Size: " << size
-			<< " Stride: " << stride
-			<< " i * size: " << (i * size) 
-			<< std::endl;
-
- 		VAO1.LinkVBO(VBO1, i, size, stride, i * size);
-	}
-
 	
+	glGenVertexArrays(1, &vao_id);				//Setup Vertex Array ID
+	glBindVertexArray(vao_id);					//Bind the Vertex Array
+
+	glGenVertexArrays(1, &vbo_id);				//Setup the Vertex Buffer ID
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+	glBufferData(GL_ARRAY_BUFFER, vert_size, vertices, GL_STATIC_DRAW);
+
+	glGenVertexArrays(1, &ebo_id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, eind_size, elementIndices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+	for (int i = 0; i < attributeCount; i++)
+	{	
+		std::cout << "Linking Attribute: " << i << std::endl;
+		std::cout <<
+			"index: " << i << std::endl <<
+			"attributeSize: " << attributeSize << std::endl <<
+			"stride: " << stride << std::endl <<
+			"Offset: " << static_cast<unsigned long long>(stride) * i * sizeof(float) << std::endl;
+
+		GLCall(glVertexAttribPointer(
+			i,											// index ID of the Attribute we're specifying
+			attributeSize,								// Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4
+			GL_FLOAT,									// Specify attribute component types
+			GL_FALSE,									// Specifies if the data should be "Normalized"
+			sizeof(float) * stride,						// Byte offset between consecutive matching attributes within the array
+			(void*)(stride * i * sizeof(float)/2)			// Offset specifies where the attribute begins in the array. 
+		));
+
+		GLCall(glEnableVertexAttribArray(i));
+
+	}
 
 }
 
-void GLOBJECT::Bind() 
+
+void GLOBJECT::updateBuffer(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndices, GLsizeiptr eind_size, int numAttributes, int stride)
 {
-	GLCall(VAO1.Bind());
-	GLCall(VBO1.Bind());
-	//EBO1.Bind();
+
+	glBindVertexArray(vao_id);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+	glBufferData(GL_ARRAY_BUFFER, vert_size, vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, eind_size, elementIndices, GL_STATIC_DRAW);
+
+}
+
+void GLOBJECT::Bind()
+{
+	glBindVertexArray(vao_id);
 }
 
 void GLOBJECT::Unbind() 
 {
-	VAO1.Unbind();
-	VBO1.Unbind();
-	EBO1.Unbind();
+	GLCall(glBindBuffer(GL_ARRAY_BUFFER, 0));
+
 }
 
-void GLOBJECT::Update(GLfloat * vertices, GLuint * indices) 
-{
-	VBO1.Update(vertices, sizeof(vertices));
-	EBO1.Update(indices, sizeof(indices));
-}
+
 
 void GLOBJECT::GetID() {
-	std::cout << "VAO1.GetID(): " << VAO1.GetID() << std::endl;
-	std::cout << "VBO1.GetID(): " << VBO1.GetID() << std::endl;
-	std::cout << "EBO1.GetID(): " << EBO1.GetID() << std::endl;
+	std::cout << "VAO1.GetID(): " << vao_id << std::endl;
+	std::cout << "VBO1.GetID(): " << vbo_id << std::endl;
+	std::cout << "EBO1.GetID(): " << ebo_id << std::endl;
 }
 
 void GLOBJECT::Delete() 
 {
-	VAO1.Delete();
-	VBO1.Delete();
-	EBO1.Delete();
+	glDeleteVertexArrays(1, &vao_id);
+	glDeleteVertexArrays(1, &vbo_id);
+	glDeleteVertexArrays(1, &ebo_id);
 
 }

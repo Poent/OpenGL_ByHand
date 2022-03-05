@@ -25,17 +25,17 @@ void VAO::LinkVBO(VBO& VBO, GLuint layout, int size, int stride, int offset)
 {	
 	VBO.Bind();
 
-	glVertexAttribPointer(	
+	GLCall(glVertexAttribPointer(	
 		layout,								// index ID of the Attribute we're specifying
 		size,								// number of components in this attribute
 		GL_FLOAT,							// Specify attribute component types
 		GL_FALSE,							// Specifies if the data should be "Normalized"
 		sizeof(float) * stride,				// Byte offset between consecutive matching attributes within the array
 		(void*)( offset * sizeof(float))	// Offset specifies where the attribute begins in the array. 
-	);
+	));
 
-	glEnableVertexAttribArray(layout);
-	VBO.Unbind();
+	GLCall(glEnableVertexAttribArray(layout));
+	//VBO.Unbind();
 }
 
 // Unbinds the VAO
