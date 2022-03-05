@@ -134,31 +134,50 @@ int main() {
 	// This object is supposed to combine all VAO, VBO, and EBO setu
 	// ACTIVE PROBLEM, CURRENTLY NOT WORKING
 	std::cout << "INIT OBJECT1..." << std::endl;
-	GLOBJECT OBJECT1(Triforce, TriforceIndicies, 2, 3, 6);
-	OBJECT1.Unbind();
 
 
-	OBJECT1.GetID();
+	float rect[] = {
+	-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // Top-left
+	 0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // Top-right
+	 0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // Bottom-right
+	-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f  // Bottom-left
+	};
+
+
+	GLuint elements[] = {
+			0, 1, 2,
+			2, 3, 0
+	};
+
+
+
+	//GLOBJECT OBJECT1(rect, elements, 1, 3, 5);
+	//OBJECT1.Unbind();
+
+	GLOBJECT OBJECT1(Triforce, sizeof(Triforce), TriforceIndicies, sizeof(TriforceIndicies), 2, 3, 6);
+	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), 2, 3, 6);
+
 
 	
-	VAO VAO1;
+	/* using vao, vbo, ebo classes
+	VAO VAO1;  //default constructor makes the ID
 	VAO1.Bind();
 
 	// Generate Vertex Buffer Object and link it to verts
 	// Initialize the object with the set of verts we want to control. 
-	VBO VBO1(Triforce, sizeof(Triforce));
+	VBO VBO1(rect, sizeof(rect));
 
 	// Generate Element Buffer and link it to indices
 	// Element buffers allow us to link the vertex of individual verticies together
 	// This allows us to reference and transform the verticies in specific ways. 
-	EBO EBO1(TriforceIndicies, sizeof(TriforceIndicies));
+	EBO EBO1(elements, sizeof(elements));
 
 	// link vbo to vao
-	VAO1.LinkVBO(VBO1, 0, 3, 6, 0);	//position attribute
-	VAO1.LinkVBO(VBO1, 1, 3, 6, 3);	//color attribute
+	VAO1.LinkVBO(VBO1, 0, 3, 5, 0);
+	//VAO1.LinkVBO(VBO1, 0, 3, 6, 0);	//position attribute
+	//VAO1.LinkVBO(VBO1, 1, 3, 6, 3);	//color attribute
 
 	// unbind everything to prevent accidentally modifying them
-	
 	VAO1.Unbind();
 	VBO1.Unbind();
 	EBO1.Unbind();
@@ -188,14 +207,14 @@ int main() {
 
 	BRICKVAO1.LinkVBO(BRICKVBO1, 0, 3, 0, 0);
 
-	BRICKVAO1.Unbind();
+	BRICKVAO1.Unbind()
 	BRICKVBO1.Unbind();
 	BRICKEBO1.Unbind();
 	//*/
 
-
+	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) {
-		std::cout << "Entered Main Loop..." << std::endl;
+
 
 		float time = float(glfwGetTime());
 		float greenValue = (sin(time) / 2.0f) + 0.5f;
@@ -213,26 +232,29 @@ int main() {
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 
-		//OBJECT1.Bind();
-		OBJECT1.VAO1.Bind();
-		OBJECT1.VBO1.Bind();
+		TESTOBJECT.Bind();
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		TESTOBJECT.Unbind();
 
-		GetActiveVBO();
-		std::cout << "Update the object (OBJECT1)..." << std::endl;
-		//OBJECT1.Update(Triforce, TriforceIndicies);
-		OBJECT1.VBO1.Update( Triforce, sizeof(TriforceIndicies) );
-
-		
-
-
-		////Draw the Triangle using the specified primitive
-		//glDrawArrays(GL_TRIANGLES, 0, 3); // replaced when implementing ebos
+		OBJECT1.Bind();
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
-
 		OBJECT1.Unbind();
 
+		//OBJECT1.Bind();
+		//parameters are:
+		//		Mode (The type of primative to render)
+		//      Count (number of elemtns to be rendered)
+		//      Type (type of values in the indicies) 
+		//      and pointer to the indicies (null pointer valid). 
+		//glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 
+		//OBJECT1.Unbind();
 
+		/*
+		VAO1.Bind();
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		VAO1.Unbind();
+		//*/
 
 
 
@@ -240,7 +262,7 @@ int main() {
 		VAO2.Bind();
 		VBO2.Bind();
 		VBO2.Update(line, sizeof(line));
-		GetActiveVBO();
+		//GetActiveVBO();
 		glDrawArrays(GL_LINES,0 , 2);
 
 		VAO2.Unbind();
@@ -263,7 +285,7 @@ int main() {
 	//VAO1.Delete();
 	//VBO1.Delete();
 	//EBO1.Delete();
-	OBJECT1.Delete();
+	//OBJECT1.Delete();
 
 
 	/*
@@ -278,7 +300,7 @@ int main() {
 
 
 	//busted.... triggers opengl breakpoint.. havn't looked into yet. 
-	shaderProgram.Delete();
+	//shaderProgram.Delete();
 	
 	std::cout << "Goodbye world!";
 	glfwDestroyWindow(window);
