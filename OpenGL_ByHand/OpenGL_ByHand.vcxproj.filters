@@ -63,6 +63,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Old Code.txt" />
+    <Text Include="README.txt" />
   </ItemGroup>
 </Project>
