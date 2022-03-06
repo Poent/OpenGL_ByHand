@@ -24,19 +24,13 @@
     <ClCompile Include="shaderClass.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="vbo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="vao.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ebo.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="globject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="glerror.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -47,15 +41,6 @@
     <ClInclude Include="shaderClass.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="vbo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="vao.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ebo.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="VertexAttributes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -63,6 +48,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="glerror.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

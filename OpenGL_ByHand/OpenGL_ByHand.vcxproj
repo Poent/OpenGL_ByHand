@@ -145,22 +145,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ebo.cpp" />
     <ClCompile Include="glerror.cpp" />
     <ClCompile Include="globject.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="shaderClass.cpp" />
-    <ClCompile Include="vao.cpp" />
-    <ClCompile Include="vbo.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ebo.h" />
     <ClInclude Include="Callbacks.h" />
     <ClInclude Include="glerror.h" />
     <ClInclude Include="globject.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="shaderClass.h" />
-    <ClInclude Include="vao.h" />
-    <ClInclude Include="vbo.h" />
     <ClInclude Include="VertexAttributes.h" />
   </ItemGroup>
   <ItemGroup>

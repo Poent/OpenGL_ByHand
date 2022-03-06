@@ -11,14 +11,13 @@
 #include <glerror.h>		// OpenGL error handling - because otherwise it sits silently screaming inside
 
 #include <VertexAttributes.h> //contains manual vertices (until we handle loading meshes)
-#include <vao.h>		// VAO class
-#include <vbo.h>		// VBO class
-#include <ebo.h>		// EBO class
+
 #include <globject.h>	//Tries (and failes) to combine the above classes into a single class...
+#include <renderer.h>
 
 #include <shaderClass.h>
 
-#define DEBUG
+//#define DEBUG
 
 
 // Learning Links
@@ -85,7 +84,7 @@ int main() {
 
 
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1); //limit draw to screen refresh rate. 
+	//glfwSwapInterval(1); //limit draw to screen refresh rate. 
 
 
 	glewInit() == GLEW_OK ? std::cout << "GLEW_OK! Version: " << glewGetString(GLEW_VERSION) << "\n" : std::cout << "GLEW_NOT_OK!\n";
@@ -122,26 +121,28 @@ int main() {
 	Shader shaderProgram("vert.shader", "frag.shader");
 	shaderProgram.Activate(); //glUseProgram
 
-
-	//Object setup (what we're drawing on the screen
-	GLOBJECT OBJECT1(Triforce, sizeof(Triforce), TriforceIndicies, sizeof(TriforceIndicies), 2, 3, 6);
-	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), 2, 3, 6);
-	GLOBJECT LINE(line, sizeof(line), 1, 2, 2);
-
 	
+	//Object setup (what we're drawing on the screen
+	GLOBJECT OBJECT1(Triforce, sizeof(Triforce), TriforceIndicies, sizeof(TriforceIndicies), GL_FLOAT, GL_FALSE, 2, 3, 6);
+	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements),GL_FLOAT, GL_FALSE, 2, 3, 6);
+	GLOBJECT LINE(line, sizeof(line), GL_FLOAT, GL_FALSE, 1, 2, 2);
+
+	Renderer renderer;
 
 	std::cout << "Entering Main Loop..." << std::endl;
-	while (!glfwWindowShouldClose(window)) {
+	while (!glfwWindowShouldClose(window)) 
+	{
 
-
+		glfwPollEvents(); // get window events (mouse, keypress, etc...)
 		float time = float(glfwGetTime());
 		float greenValue = (sin(time) / 2.0f) + 0.5f;
+		line[0] = 2.0 * mouseX / windowW - 1.0;
+		line[1] = 1.0 - 2.0 * mouseY / windowH;
+		//glLineWidth(1); //must be <= 1. Thick lines is depreciated.
 
 		
-		glClearColor(0.2f, 0.2f, 0.8f, 1.0f);		// set the background color
-		glClear(GL_COLOR_BUFFER_BIT);				// clear the screen
-		glLineWidth(1);								// Must be < 1.0. Will need to make a poly for thick lines...
-
+		renderer.clear(0.2f, 0.2f, 0.8f, 1.0f);
+							
 		shaderProgram.Activate(); //glUseProgram
 
 
@@ -149,37 +150,22 @@ int main() {
 		//vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor"); //cycle green
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
+		renderer.Draw(TESTOBJECT, shaderProgram);
+		renderer.Draw(OBJECT1, shaderProgram);
 
-		//glDrawElements
-		//		Mode (The type of primative to render)
-		//      Count (number of elemtns to be rendered)
-		//      Type (type of values in the indicies) 
-		//      and pointer to the indicies (null pointer valid). 
-
-		TESTOBJECT.Bind();
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		TESTOBJECT.Unbind();
-
-		OBJECT1.Bind();
-		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
-		OBJECT1.Unbind();
-
-
-
+		//need to update rendered to accept draw types (line vs element vs array). 
 		LINE.Bind();
 		LINE.Update(line, sizeof(line), 1, 2, 2);
 		glDrawArrays(GL_LINES, 0, 2);
 		LINE.Unbind();
 
-
-		line[0] = 2.0 * mouseX / windowW -1.0;
-		line[1] = 1.0 - 2.0 * mouseY / windowH;
-
 		
 		glfwSwapBuffers(window);
-		glfwPollEvents(); // get window events (mouse, keypress, etc...)
+
 
 	}
+
+
 
 	std::cout << "STOPPING... Cleanup starting..." << std::endl;
 
