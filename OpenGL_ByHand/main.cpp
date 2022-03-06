@@ -1,6 +1,12 @@
 #include <GL\glew.h>		// automagically links system-specific OpenGL implementations (eg, from your video driver)
 #include <GLFW\glfw3.h>		// Cross platform window handler. will probably replace with lmgui later
 
+//#include <glm/glm.hpp>
+//#include <glm/gtc/matrix_transform.hpp>
+//#include <glm/gtc/type_ptr.hpp>
+//#include <glm/ext/matrix_float3x4.hpp>
+//#include <glm/ext/matrix_transform.hpp>
+
 #include <Callbacks.h>		// lazy input handling
 #include <glerror.h>		// OpenGL error handling - because otherwise it sits silently screaming inside
 
@@ -109,108 +115,20 @@ int main() {
 	std::cout << "Max number of vertex attribs supported: " << nrAttributes << std::endl;
 #endif
 
-	/*==========  END DEFAULT INITIALIZE STUFF ====================*/
 
 
-	/*==========  Start OpenGL state/Buffer creation  =============*/
 
 	//setup our shader object
 	Shader shaderProgram("vert.shader", "frag.shader");
 	shaderProgram.Activate(); //glUseProgram
 
-	/*
-	//playing with  uniforms now that the shaders are defined and activated
-	int vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor");
-	std::cout << std::endl << "ourColor uniform location: " << vertexColorLocation << std::endl;
-	int location = glGetUniformLocation(shaderProgram.getID(), "u_Color");
-	std::cout << "Uniform u_Color Location: " << location << std::endl;
 
-	//glUniform4f(location, 0.2f, 0.3f, 0.8f, 1.0f);
-	*/
-
-
-
-	// Trying to replace VAO1 (below) with our combnined buffer object
-	// This object is supposed to combine all VAO, VBO, and EBO setu
-	// ACTIVE PROBLEM, CURRENTLY NOT WORKING
-	std::cout << "INIT OBJECT1..." << std::endl;
-
-
-	float rect[] = {
-	-0.5f,  0.5f, 0.0f, 1.0f, 0.0f, 0.0f, // Top-left
-	 0.5f,  0.5f, 0.0f, 0.0f, 1.0f, 0.0f, // Top-right
-	 0.5f, -0.5f, 0.0f, 0.0f, 0.0f, 1.0f, // Bottom-right
-	-0.5f, -0.5f, 0.0f, 1.0f, 1.0f, 1.0f  // Bottom-left
-	};
-
-
-	GLuint elements[] = {
-			0, 1, 2,
-			2, 3, 0
-	};
-
-
-
-	//GLOBJECT OBJECT1(rect, elements, 1, 3, 5);
-	//OBJECT1.Unbind();
-
+	//Object setup (what we're drawing on the screen
 	GLOBJECT OBJECT1(Triforce, sizeof(Triforce), TriforceIndicies, sizeof(TriforceIndicies), 2, 3, 6);
 	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), 2, 3, 6);
-
+	GLOBJECT LINE(line, sizeof(line), 1, 2, 2);
 
 	
-	/* using vao, vbo, ebo classes
-	VAO VAO1;  //default constructor makes the ID
-	VAO1.Bind();
-
-	// Generate Vertex Buffer Object and link it to verts
-	// Initialize the object with the set of verts we want to control. 
-	VBO VBO1(rect, sizeof(rect));
-
-	// Generate Element Buffer and link it to indices
-	// Element buffers allow us to link the vertex of individual verticies together
-	// This allows us to reference and transform the verticies in specific ways. 
-	EBO EBO1(elements, sizeof(elements));
-
-	// link vbo to vao
-	VAO1.LinkVBO(VBO1, 0, 3, 5, 0);
-	//VAO1.LinkVBO(VBO1, 0, 3, 6, 0);	//position attribute
-	//VAO1.LinkVBO(VBO1, 1, 3, 6, 3);	//color attribute
-
-	// unbind everything to prevent accidentally modifying them
-	VAO1.Unbind();
-	VBO1.Unbind();
-	EBO1.Unbind();
-	//*/
-
-	//Working use of VAO, VBO outside of GLOBJECT
-	//==== Initialize Line Draw Function ====
-	
-	VAO VAO2;							// Generate Vertex Array Object (This is nothing but a state wrapper)
-	VAO2.Bind();						// Set that buffer as active
-	VBO VBO2(line, sizeof(line));		// Initialize the VBO with actual data
-
-	VAO2.LinkVBO(VBO2, 0, 2, 0, 0);		//link the VBO to the VAO and tell it how to read the data
-
-	VAO2.Unbind();						//cleanup after setup
-	VBO2.Unbind();						//cleanup after setup
-	//==== End Line Draw init
-
-
-
-	/*
-	VAO BRICKVAO1;
-	BRICKVAO1.Bind();
-
-	VBO BRICKVBO1(brick, sizeof(brick));
-	EBO BRICKEBO1(brickEDO, sizeof(brickEDO));
-
-	BRICKVAO1.LinkVBO(BRICKVBO1, 0, 3, 0, 0);
-
-	BRICKVAO1.Unbind()
-	BRICKVBO1.Unbind();
-	BRICKEBO1.Unbind();
-	//*/
 
 	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) {
@@ -232,6 +150,12 @@ int main() {
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 
+		//glDrawElements
+		//		Mode (The type of primative to render)
+		//      Count (number of elemtns to be rendered)
+		//      Type (type of values in the indicies) 
+		//      and pointer to the indicies (null pointer valid). 
+
 		TESTOBJECT.Bind();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		TESTOBJECT.Unbind();
@@ -240,38 +164,16 @@ int main() {
 		glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
 		OBJECT1.Unbind();
 
-		//OBJECT1.Bind();
-		//parameters are:
-		//		Mode (The type of primative to render)
-		//      Count (number of elemtns to be rendered)
-		//      Type (type of values in the indicies) 
-		//      and pointer to the indicies (null pointer valid). 
-		//glDrawElements(GL_TRIANGLES, 9, GL_UNSIGNED_INT, 0);
-
-		//OBJECT1.Unbind();
-
-		/*
-		VAO1.Bind();
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		VAO1.Unbind();
-		//*/
 
 
+		LINE.Bind();
+		LINE.Update(line, sizeof(line), 1, 2, 2);
+		glDrawArrays(GL_LINES, 0, 2);
+		LINE.Unbind();
 
-
-		VAO2.Bind();
-		VBO2.Bind();
-		VBO2.Update(line, sizeof(line));
-		//GetActiveVBO();
-		glDrawArrays(GL_LINES,0 , 2);
-
-		VAO2.Unbind();
-		VBO2.Unbind();
 
 		line[0] = 2.0 * mouseX / windowW -1.0;
 		line[1] = 1.0 - 2.0 * mouseY / windowH;
-
-
 
 		
 		glfwSwapBuffers(window);
@@ -281,25 +183,7 @@ int main() {
 
 	std::cout << "STOPPING... Cleanup starting..." << std::endl;
 
-	//delete all the stuff we made
-	//VAO1.Delete();
-	//VBO1.Delete();
-	//EBO1.Delete();
-	//OBJECT1.Delete();
-
-
-	/*
-	BRICKEBO1.Delete();
-	BRICKVAO1.Delete();
-	BRICKVBO1.Delete();
-	*/
-	VAO2.Delete();
-	VBO2.Delete();
-	
-
-
-
-	//busted.... triggers opengl breakpoint.. havn't looked into yet. 
+	//broken for some reason
 	//shaderProgram.Delete();
 	
 	std::cout << "Goodbye world!";

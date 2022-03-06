@@ -21,20 +21,25 @@ class GLOBJECT {
 			int stride					// distance between attribute values
 		);
 
-		void updateBuffer(
+		//Creaet without a Element Index Array
+		GLOBJECT(
 			GLfloat* vertices,			// pointer to the verex array
 			GLsizeiptr vert_size,		// size of the indices array
-			GLuint* elementIndices,	// pointer to the element array mapping
-			GLsizeiptr eind_size,		// size of the element array
-			int numAttributes,			// number of attrubtes in the vertex array
+			int attributeCount,			// number of attrubtes in the vertex array
+			int attributeSize,			// how big is each attribute set
 			int stride					// distance between attribute values
 		);
 
 
-
 		void Bind();
 		void Unbind();
-		void Update(GLfloat * vertices, GLuint * indices);
+		void Update(
+			GLfloat* vertices,
+			GLsizeiptr vert_size,
+			int attributeCount,
+			int attributeSize,
+			int stride
+		);
 		void GetID();
 		void Delete();
 
