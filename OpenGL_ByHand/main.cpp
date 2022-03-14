@@ -17,6 +17,9 @@
 
 #include <shaderClass.h>
 
+#include <texture.h>
+
+
 //#define DEBUG
 
 
@@ -86,6 +89,12 @@ int main() {
 	GLOBJECT LINE(line, sizeof(line), GL_FLOAT, GL_FALSE, 1, 2, 2);
 
 	Renderer renderer;
+	
+
+	Texture texture("Resources/Jake_Small.png");
+	texture.Bind();
+
+
 
 	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) 
