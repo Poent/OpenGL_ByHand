@@ -76,10 +76,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="vert.shader">
+    <None Include="texvert.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="frag.shader">
+    <None Include="texfrag.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="colorfrag.shader">
+      <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="colorvert.shader">
       <Filter>Resource Files\Shaders</Filter>
     </None>
   </ItemGroup>

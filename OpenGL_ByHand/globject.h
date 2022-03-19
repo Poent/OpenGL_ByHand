@@ -48,7 +48,7 @@ class GLOBJECT {
 			int attributeCount,			// number of attrubtes in the vertex array
 			int attributeSize,			// how big is each attribute set
 			int stride,					// distance between attribute values
-			bool texture
+			int textureType				// This is a custom  
 		);
 
 		void Bind() const;

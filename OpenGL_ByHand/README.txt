@@ -14,14 +14,23 @@ In Progress:
 - once we can draw a texture on a single square we'll transform that squares position and start thinking about how we handle multiples on the screen
 - studying textures and implementations of textures through shaders. 
 - Learning GLSL shader language... freaking awesome but math hard for my monkey brain
-- 
-
-
 
 
 Change Log:
 
 03/19/2022
+- Setup two different shader programs to handle coloring textures by vertex attribute or by texture + color
+- This corrects the "black" texture mix that was occuring when no texture was provided to the shader (which was explicitly told to multiple the FragColor by the nonexistant texture value).
+- Added draw function during initialization to try and handle opengl performance warning with shader recompile... 
+- Still occurs after test objext init and line init. Research shows that the issue may be related to the bind and link order in relation to the shader activation... but didn't see further information. 
+- Since the warning only occurs once at startup I think it's safe to ignore for now.
+- Adjusted globject to have an interger type - not fully implemented. 
+- Type will be used to simplify the golobject class, so a single constructor can be used for multiple object types. 
+- Right now we're using overloaded default constructors to correctly setup the different types of objects 
+
+
+
+03/18/2022
 - implemented texture class and included stb_image to load textures into memory. 
 - created new overloaded globject constructor to handle textured objects. This type of GLOBJECT takes an additional texture mapping attribute from the attribute vertex and binds it to ID2.
 - The overloaded constructor seems to not break anything. 

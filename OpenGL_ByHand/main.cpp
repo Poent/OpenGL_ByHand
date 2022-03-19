@@ -57,7 +57,7 @@ int main() {
 	glfwSetWindowSizeCallback(window, window_size_callback);		//setup window resize callback
 	glfwSetCursorPosCallback(window, cursorPositionCallback);		//setup cursor position callback
 	
-	glViewport(0, 0, windowW, windowH); //set default viewport Should move value to a const uint... can then use window size callback. 
+	//glViewport(0, 0, windowW, windowH); //set default viewport Should move value to a const uint... can then use window size callback. 
 
 #ifdef DEBUG
 	//POINT ERROR HANDLER HERE NOW THAT GL is setup
@@ -66,9 +66,7 @@ int main() {
 
 	//Tell OpenGL what to do with error (send it to our function in glerror.h)
 	glDebugMessageCallback(GLDebugMessageCallback, NULL);
-#endif
 
-#ifdef DEBUG
 	//get the max number of vertex attributes supported by the GPU
 	//Interesting to know but we won't be bumping up against this anytime soon
 	//(opengl limits this to 16 by default). 
@@ -78,30 +76,37 @@ int main() {
 #endif
 
 
-	//setup our shader object
-	Shader shaderProgram("vert.shader", "frag.shader");
-	shaderProgram.Activate(); //glUseProgram
+	//setup our shader objects
+	Shader vertexshader("colorvert.shader", "colorfrag.shader");
+	Shader textureshader("texvert.shader", "texfrag.shader");
+	
+	//activate our shaders
+	vertexshader.Activate(); //glUseProgram
+	textureshader.Activate();
 
+	//initialize our renderer... eventually we will move the shader setup into this.
+	Renderer renderer;
 	
 	//Object setup (what we're drawing on the screen
 	GLOBJECT OBJECT1(Triforce, sizeof(Triforce), TriforceIndicies, sizeof(TriforceIndicies), GL_FLOAT, GL_FALSE, 2, 3, 6);
 	GLOBJECT LINE(line, sizeof(line), GL_FLOAT, GL_FALSE, 1, 2, 2);
 
-
-
-	
-	
+	renderer.Draw(OBJECT1, vertexshader);
 	//Testing the loading of textures. This uses our texture class to load an image with stb_img.  
-	
 	//This is a new overloaded constructor that adds the texture attribute. It just seemed like the simplest way to load the attribute at the time.
 	//We confirmed that the constructor is working appropriately by testing it without the texture specified in the shader driver...
 	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), GL_FLOAT, GL_FALSE, 3, 3, 8, 1);
 	Texture texture("Textures/Jake_small.png");
+	renderer.Draw(TESTOBJECT, textureshader); // Tell our rendere class to use the texture shader for draw functions
 
-	glUniform1i(glGetUniformLocation(shaderProgram.getID(), "texture1"), 0);
+	 
+	glUniform1i(glGetUniformLocation(textureshader.getID(), "texture1"), 0);
 
 
-	Renderer renderer;
+
+
+	
+
 
 	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) 
@@ -115,20 +120,24 @@ int main() {
 		//glLineWidth(1); //must be <= 1. Thick lines is depreciated.
 
 		
-		renderer.clear(0.2f, 0.2f, 0.8f, 1.0f);
+		renderer.clear(0.2f, 0.4f, 0.8f, 1.0f);
 							
-		shaderProgram.Activate(); //glUseProgram
+
 
 
 		//update specific shader uniforms
 		//vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor"); //cycle green
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
-		GLCall(glActiveTexture(GL_TEXTURE0));
-		texture.Bind();
-		renderer.Draw(TESTOBJECT, shaderProgram);
 		
-		renderer.Draw(OBJECT1, shaderProgram);
+		textureshader.Activate(); //glUseProgram
+		//GLCall(glActiveTexture(GL_TEXTURE0));
+		texture.Bind();
+		renderer.Draw(TESTOBJECT, textureshader);
+		
+
+		vertexshader.Activate();
+		renderer.Draw(OBJECT1, vertexshader);
 
 		//need to update rendered to accept draw types (line vs element vs array). 
 		LINE.Bind();

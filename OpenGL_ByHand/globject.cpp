@@ -9,8 +9,7 @@ GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndic
 		a_count( attributeCount), 
 		e_count( eind_size / sizeof(elementIndices[0]))
 {
-	int a = vert_size;
-	int b = sizeof(vertices[0]);
+
 	glGenVertexArrays(1, &vao_id);				//Setup Vertex Array ID
 	glBindVertexArray(vao_id);					//Bind the Vertex Array
 
@@ -26,6 +25,8 @@ GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndic
 	for (int i = 0; i < attributeCount; i++)
 	{	
 #ifdef DEBUG
+		int a = vert_size;
+		int b = sizeof(vertices[0]);
 		std::cout << "Linking Attribute: " << i << std::endl;
 		std::cout <<
 			"index: " << i << std::endl <<
@@ -91,25 +92,25 @@ GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLenum ArrayType, GL
 	}
 }
 
-GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndices, GLsizeiptr eind_size, GLenum ArrayType, GLboolean Normalized, int attributeCount, int attributeSize, int stride, bool texture)
+GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndices, GLsizeiptr eind_size, GLenum ArrayType, GLboolean Normalized, int attributeCount, int attributeSize, int stride, int textureType)
 	:	v_count(vert_size / sizeof(vertices[0])),
 		a_count(attributeCount),
 		e_count(eind_size / sizeof(elementIndices[0])) 
 {
 
-
 	glGenVertexArrays(1, &vao_id);				//Setup Vertex Array ID
 	glBindVertexArray(vao_id);					//Bind the Vertex Array
 
 	glGenVertexArrays(1, &vbo_id);				//Setup the Vertex Buffer ID
-	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
-	glBufferData(GL_ARRAY_BUFFER, vert_size, vertices, GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);		//Bind the buffer object
+	glBufferData(GL_ARRAY_BUFFER, vert_size, vertices, GL_STATIC_DRAW); //Fill the buffer with our data (verticies from VertexAttribute.h)
 
 	glGenVertexArrays(1, &ebo_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, eind_size, elementIndices, GL_STATIC_DRAW);
-
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+
+
 	for (int i = 0; i < 2; i++)
 	{
 		GLCall(glVertexAttribPointer(

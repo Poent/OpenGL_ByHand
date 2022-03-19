@@ -164,8 +164,10 @@
     <ClInclude Include="VertexAttributes.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="frag.shader" />
-    <None Include="vert.shader" />
+    <None Include="colorfrag.shader" />
+    <None Include="colorvert.shader" />
+    <None Include="texfrag.shader" />
+    <None Include="texvert.shader" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />
