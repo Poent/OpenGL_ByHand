@@ -1,16 +1,31 @@
 // Learning Links
+// https://learnopengl.com/
 // http://glew.sourceforge.net/basic.html
 // https://www.glfw.org/docs/3.3/quick_guide.html
 
 /*
 !!!NOTES!!!
 In Progress:
+- https://learnopengl.com/Getting-started/Textures
 - https://learnopengl.com/Getting-started/Shaders
+- https://learnopengl.com/Getting-started/Transformations - UP NEXT GUHHHH
 - Studying shaders and uniforms. Getting ready to updated VertexAttribs to include additional... vertex attribs
 - Specifically looking to update attribs from just pos - will eventually include position, color, and texture coord (S, T, R). 
 - once we can draw a texture on a single square we'll transform that squares position and start thinking about how we handle multiples on the screen
+- studying textures and implementations of textures through shaders. 
+- Learning GLSL shader language... freaking awesome but math hard for my monkey brain
+- 
+
 
 Change Log:
+
+03/19/2022
+- implemented texture class and included stb_image to load textures into memory. 
+- created new overloaded globject constructor to handle textured objects. This type of GLOBJECT takes an additional texture mapping attribute from the attribute vertex and binds it to ID2.
+- The overloaded constructor seems to not break anything. 
+- vertex and fragment shaders are now mixing textures and vertexColors. Need to probably write two different shaders to handle different render scenarios. 
+
+
 03/06/2022
 - expanded GLOBJECT to manage vertex types, attribute/vertex/element count, and normal state.
 - updated GLOBJECT::GLOBJECT to use object variables for glVertexAttribPointer.

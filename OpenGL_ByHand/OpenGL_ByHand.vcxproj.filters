@@ -87,7 +87,10 @@
     <Text Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Resources\Jake_small.png">
+    <Image Include="Textures\awesomeface.png">
+      <Filter>Resource Files\Textures</Filter>
+    </Image>
+    <Image Include="Textures\Jake_small.png">
       <Filter>Resource Files\Textures</Filter>
     </Image>
   </ItemGroup>
