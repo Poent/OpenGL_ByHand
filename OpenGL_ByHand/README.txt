@@ -17,13 +17,16 @@ In Progress:
 - 
 
 
+
+
 Change Log:
 
 03/19/2022
 - implemented texture class and included stb_image to load textures into memory. 
 - created new overloaded globject constructor to handle textured objects. This type of GLOBJECT takes an additional texture mapping attribute from the attribute vertex and binds it to ID2.
 - The overloaded constructor seems to not break anything. 
-- vertex and fragment shaders are now mixing textures and vertexColors. Need to probably write two different shaders to handle different render scenarios. 
+- vertex and fragment shaders are now mixing textures and vertexColors. This is a problem when no texture is used... vertex colors mix with black...
+- Need to probably write two different shaders to handle different render scenarios. 
 
 
 03/06/2022
