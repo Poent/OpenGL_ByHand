@@ -1,7 +1,12 @@
 #pragma once
 
+#include <string>
 #include <iostream>
 #include <GL/glew.h>
+#include <texture.h>
+
+
+
 
 
 class GLOBJECT {
@@ -33,6 +38,18 @@ class GLOBJECT {
 			int stride					// distance between attribute values
 		);
 
+		GLOBJECT(
+			GLfloat* vertices,			// pointer to the verex array
+			GLsizeiptr vert_size,		// size of the indices array
+			GLuint* elementIndices,		// pointer to the element array mapping
+			GLsizeiptr eind_size,		// size of the element array
+			GLenum ArrayType,			// Array Type
+			GLboolean Normalized,		// Normalized or not
+			int attributeCount,			// number of attrubtes in the vertex array
+			int attributeSize,			// how big is each attribute set
+			int stride,					// distance between attribute values
+			bool texture
+		);
 
 		void Bind() const;
 		void Unbind() const;

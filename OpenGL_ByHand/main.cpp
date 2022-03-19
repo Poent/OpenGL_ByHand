@@ -85,16 +85,23 @@ int main() {
 	
 	//Object setup (what we're drawing on the screen
 	GLOBJECT OBJECT1(Triforce, sizeof(Triforce), TriforceIndicies, sizeof(TriforceIndicies), GL_FLOAT, GL_FALSE, 2, 3, 6);
-	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements),GL_FLOAT, GL_FALSE, 2, 3, 6);
 	GLOBJECT LINE(line, sizeof(line), GL_FLOAT, GL_FALSE, 1, 2, 2);
 
-	Renderer renderer;
+
+
 	
+	
+	//Testing the loading of textures. This uses our texture class to load an image with stb_img.  
+	
+	//This is a new overloaded constructor that adds the texture attribute. It just seemed like the simplest way to load the attribute at the time.
+	//We confirmed that the constructor is working appropriately by testing it without the texture specified in the shader driver...
+	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), GL_FLOAT, GL_FALSE, 3, 3, 8, 1);
+	Texture texture("Textures/Jake_small.png");
 
-	Texture texture("Resources/Jake_Small.png");
-	texture.Bind();
+	glUniform1i(glGetUniformLocation(shaderProgram.getID(), "texture1"), 0);
 
 
+	Renderer renderer;
 
 	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) 
@@ -117,7 +124,10 @@ int main() {
 		//vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor"); //cycle green
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
+		GLCall(glActiveTexture(GL_TEXTURE0));
+		texture.Bind();
 		renderer.Draw(TESTOBJECT, shaderProgram);
+		
 		renderer.Draw(OBJECT1, shaderProgram);
 
 		//need to update rendered to accept draw types (line vs element vs array). 

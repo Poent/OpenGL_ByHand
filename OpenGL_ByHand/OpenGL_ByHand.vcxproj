@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)OpenGL_ByHand;$(SolutionDir)Dependencies\;$(SolutionDir)\Dependencies\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)OpenGL_ByHand;$(SolutionDir)Dependencies\;$(SolutionDir)\Dependencies\glm;$(SolutionDir)\Resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -171,7 +171,8 @@
     <Text Include="README.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="..\Resources\Jake_small.png" />
+    <Image Include="Textures\awesomeface.png" />
+    <Image Include="Textures\Jake_small.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

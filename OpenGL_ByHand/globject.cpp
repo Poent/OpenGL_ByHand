@@ -38,8 +38,8 @@ GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndic
 			attributeSize,								// Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4
 			ArrayType,									// Specify attribute component types
 			Normalized,									// Specifies if the data should be "Normalized"
-			sizeof(float) * stride,						// Byte offset between consecutive matching attributes within the array
-			(void*)(stride * i * sizeof(float)/2)			// Offset specifies where the attribute begins in the array. 
+			sizeof(float) * stride,						// Byte offset between consecutive attributes within the array
+			(void*)(attributeSize * i * sizeof(float))		// Offset specifies where the attribute begins in the array. 
 		));
 
 		GLCall(glEnableVertexAttribArray(i));
@@ -90,6 +90,58 @@ GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLenum ArrayType, GL
 
 	}
 }
+
+GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndices, GLsizeiptr eind_size, GLenum ArrayType, GLboolean Normalized, int attributeCount, int attributeSize, int stride, bool texture)
+	:	v_count(vert_size / sizeof(vertices[0])),
+		a_count(attributeCount),
+		e_count(eind_size / sizeof(elementIndices[0])) 
+{
+
+
+	glGenVertexArrays(1, &vao_id);				//Setup Vertex Array ID
+	glBindVertexArray(vao_id);					//Bind the Vertex Array
+
+	glGenVertexArrays(1, &vbo_id);				//Setup the Vertex Buffer ID
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+	glBufferData(GL_ARRAY_BUFFER, vert_size, vertices, GL_STATIC_DRAW);
+
+	glGenVertexArrays(1, &ebo_id);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo_id);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, eind_size, elementIndices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ARRAY_BUFFER, vbo_id);
+	for (int i = 0; i < 2; i++)
+	{
+		GLCall(glVertexAttribPointer(
+			i,												// index ID of the Attribute we're specifying
+			attributeSize,									// Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4
+			ArrayType,										// Specify attribute component types
+			Normalized,										// Specifies if the data should be "Normalized"
+			sizeof(float) * stride,							// Byte offset between consecutive attributes within the array
+			(void*)(attributeSize * i * sizeof(float))		// Offset specifies where the attribute begins in the array. 
+		));
+
+		GLCall(glEnableVertexAttribArray(i));
+
+	}
+
+	GLCall(glVertexAttribPointer(
+		2,												// index ID of the Attribute we're specifying
+		2,												// Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4
+		ArrayType,										// Specify attribute component types
+		Normalized,										// Specifies if the data should be "Normalized"
+		sizeof(float) * stride,							// Byte offset between consecutive attributes within the array
+		(void*)(attributeSize * 2 * sizeof(float))		// Offset specifies where the attribute begins in the array. 
+	));
+
+	GLCall(glEnableVertexAttribArray(2));
+
+
+	
+
+
+}
+
 
 
 void GLOBJECT::Update(GLfloat* vertices, GLsizeiptr vert_size, int attributeCount, int attributeSize, int stride)
