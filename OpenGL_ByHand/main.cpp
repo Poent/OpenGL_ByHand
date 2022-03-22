@@ -19,8 +19,18 @@
 
 #include <texture.h>
 
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
-//#define DEBUG
+
+
+#define DEBUG
+
+//Playing with Tranforms
+
+
+
 
 
 
@@ -31,6 +41,9 @@ const int windowW = 800, windowH = 800;
 
 
 int main() {
+	
+
+
 
 
 	/*============ INITIALIZE STUFF ========================*/
@@ -99,8 +112,10 @@ int main() {
 	Texture texture("Textures/Jake_small.png");
 	renderer.Draw(TESTOBJECT, textureshader); // Tell our rendere class to use the texture shader for draw functions
 
-	 
+	 //inform glsl shader that we have a texture for it to use. 
 	glUniform1i(glGetUniformLocation(textureshader.getID(), "texture1"), 0);
+
+ 
 
 
 
@@ -121,8 +136,22 @@ int main() {
 
 		
 		renderer.clear(0.2f, 0.4f, 0.8f, 1.0f);
-							
 
+		textureshader.Activate(); //glUseProgram//GLCall(glActiveTexture(GL_TEXTURE0));
+
+		glm::mat4 trans = glm::mat4(1.0f); //Initialize our translation identity matrix (diagonal 1's)
+		//rotate and scale the matrix. 	
+		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
+		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		//Get the "transform" uniform location from the 'textureshader' shader program (see vert shader)
+		unsigned int transformLoc = glGetUniformLocation(textureshader.getID(), "transform");
+		//send the matrix data to the shader.
+		GLCall(glUniformMatrix4fv(
+			transformLoc,			//Uniform location (grabbed from above)
+			1,						//Tell Opengl how man y matricies we'd like to send
+			GL_FALSE,				//Do we want to transpose the matrix (swap cols and rows)?
+			glm::value_ptr(trans)	//send the data to shader
+		));
 
 
 		//update specific shader uniforms
@@ -130,8 +159,7 @@ int main() {
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
 		
-		textureshader.Activate(); //glUseProgram
-		//GLCall(glActiveTexture(GL_TEXTURE0));
+
 		texture.Bind();
 		renderer.Draw(TESTOBJECT, textureshader);
 		
