@@ -25,7 +25,7 @@
 
 
 
-#define DEBUG
+//#define DEBUG
 
 //Playing with Tranforms
 
@@ -117,12 +117,6 @@ int main() {
 
  
 
-
-
-
-	
-
-
 	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) 
 	{
@@ -143,6 +137,8 @@ int main() {
 		//rotate and scale the matrix. 	
 		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
 		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		float scaleAmount = sin(glfwGetTime());
+		trans = glm::scale(trans, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
 		//Get the "transform" uniform location from the 'textureshader' shader program (see vert shader)
 		unsigned int transformLoc = glGetUniformLocation(textureshader.getID(), "transform");
 		//send the matrix data to the shader.
