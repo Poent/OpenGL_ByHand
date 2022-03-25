@@ -116,12 +116,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)Dependencies\GLEW\include;$(SolutionDir)Dependencies\GLFW\include;$(SolutionDir)OpenGL_ByHand;$(SolutionDir)Dependencies\;$(SolutionDir)\Dependencies\glm;$(SolutionDir)\Resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\OpenGL_ByHand\Dependencies\GLEW\include;$(SolutionDir)\OpenGL_ByHand\Dependencies\GLFW\include;$(SolutionDir)OpenGL_ByHand;$(SolutionDir)Dependencies\;$(SolutionDir)\OpenGL_ByHand\Dependencies\glm;$(SolutionDir)\Resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)Dependencies\GLFW\lib-vc2019;$(SolutionDir)Dependencies\GLEW\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)\OpenGL_ByHand\Dependencies\GLFW\lib-vc2019;$(SolutionDir)\OpenGL_ByHand\Dependencies\GLEW\lib\Release\x64;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32s.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -152,6 +152,13 @@
     <ClCompile Include="shaderClass.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="texture.cpp" />
+    <ClCompile Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Vendor\imgui-1.87\imgui.cpp" />
+    <ClCompile Include="Vendor\imgui-1.87\imgui_demo.cpp" />
+    <ClCompile Include="Vendor\imgui-1.87\imgui_draw.cpp" />
+    <ClCompile Include="Vendor\imgui-1.87\imgui_tables.cpp" />
+    <ClCompile Include="Vendor\imgui-1.87\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Callbacks.h" />
@@ -161,6 +168,15 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="shaderClass.h" />
     <ClInclude Include="texture.h" />
+    <ClInclude Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_glfw.h" />
+    <ClInclude Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_opengl3.h" />
+    <ClInclude Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Vendor\imgui-1.87\imconfig.h" />
+    <ClInclude Include="Vendor\imgui-1.87\imgui.h" />
+    <ClInclude Include="Vendor\imgui-1.87\imgui_internal.h" />
+    <ClInclude Include="Vendor\imgui-1.87\imstb_rectpack.h" />
+    <ClInclude Include="Vendor\imgui-1.87\imstb_textedit.h" />
+    <ClInclude Include="Vendor\imgui-1.87\imstb_truetype.h" />
     <ClInclude Include="VertexAttributes.h" />
   </ItemGroup>
   <ItemGroup>

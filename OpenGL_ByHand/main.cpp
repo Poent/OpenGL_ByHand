@@ -19,11 +19,13 @@
 
 #include <texture.h>
 
-#include <glm/glm.hpp>
-#include <glm/gtc/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
-
+#include <Vendor/imgui-1.87/imgui.h>
+#include <vendor/imgui-1.87/example_glfw_opengl3/imgui_impl_opengl3.h>
+#include <Vendor/imgui-1.87/example_glfw_opengl3/imgui_impl_glfw.h>
 
 //#define DEBUG
 
@@ -70,6 +72,22 @@ int main() {
 	glfwSetWindowSizeCallback(window, window_size_callback);		//setup window resize callback
 	glfwSetCursorPosCallback(window, cursorPositionCallback);		//setup cursor position callback
 	
+	const char* glsl_version = "#version 130";
+		// Setup Dear ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	// Setup Dear ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsClassic();
+
+	// Setup Platform/Renderer backends
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init(glsl_version);
+
 	//glViewport(0, 0, windowW, windowH); //set default viewport Should move value to a const uint... can then use window size callback. 
 
 #ifdef DEBUG
@@ -114,13 +132,14 @@ int main() {
 
 	 //inform glsl shader that we have a texture for it to use. 
 	glUniform1i(glGetUniformLocation(textureshader.getID(), "texture1"), 0);
-
- 
+	
+	bool show_demo_window = true;
+	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) 
 	{
-
+		float glfwTime = (float)glfwGetTime();
 		glfwPollEvents(); // get window events (mouse, keypress, etc...)
 		float time = float(glfwGetTime());
 		float greenValue = (sin(time) / 2.0f) + 0.5f;
@@ -128,15 +147,48 @@ int main() {
 		line[1] = 1.0 - 2.0 * mouseY / windowH;
 		//glLineWidth(1); //must be <= 1. Thick lines is depreciated.
 
-		
-		renderer.clear(0.2f, 0.4f, 0.8f, 1.0f);
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		if (true)
+			//ImGui::ShowDemoWindow(&show_demo_window);
+
+		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
+		{
+			static float f = 0.0f;
+			static int counter = 0;
+
+			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
+			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+			ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
+			//ImGui::Checkbox("Another Window", &show_another_window);
+
+			ImGui::SliderFloat("float", &glfwTime, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::ColorEdit3("clear color", (float*) & clear_color); // Edit 3 floats representing a color
+
+			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+				counter++;
+			ImGui::SameLine();
+			ImGui::Text("counter = %d", counter);
+
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::End();
+		}
+
+
+
+
+
+		renderer.clear(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
 
 		textureshader.Activate(); //glUseProgram//GLCall(glActiveTexture(GL_TEXTURE0));
 
 		glm::mat4 trans = glm::mat4(1.0f); //Initialize our translation identity matrix (diagonal 1's)
 		//rotate and scale the matrix. 	
 		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		trans = glm::rotate(trans, (float)glfwGetTime(), glm::vec3(0.0f, 0.0f, 1.0f));
+		trans = glm::rotate(trans, glfwTime, glm::vec3(0.0f, 0.0f, 1.0f));
 		float scaleAmount = sin(glfwGetTime());
 		trans = glm::scale(trans, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
 		//Get the "transform" uniform location from the 'textureshader' shader program (see vert shader)
@@ -169,13 +221,18 @@ int main() {
 		glDrawArrays(GL_LINES, 0, 2);
 		LINE.Unbind();
 
-		
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
 		glfwSwapBuffers(window);
 
 
 	}
 
 
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplGlfw_Shutdown();
+	ImGui::DestroyContext();
 
 	std::cout << "STOPPING... Cleanup starting..." << std::endl;
 
