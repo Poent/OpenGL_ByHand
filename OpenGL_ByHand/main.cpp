@@ -1,24 +1,6 @@
 #include <GL\glew.h>		// automagically links system-specific OpenGL implementations (eg, from your video driver)
 #include <GLFW\glfw3.h>		// Cross platform window handler. will probably replace with lmgui later
 
-//#include <glm/glm.hpp>
-//#include <glm/gtc/matrix_transform.hpp>
-//#include <glm/gtc/type_ptr.hpp>
-//#include <glm/ext/matrix_float3x4.hpp>
-//#include <glm/ext/matrix_transform.hpp>
-
-#include <Callbacks.h>		// lazy input handling
-#include <glerror.h>		// OpenGL error handling - because otherwise it sits silently screaming inside
-
-#include <VertexAttributes.h> //contains manual vertices (until we handle loading meshes)
-
-#include <globject.h>	//Tries (and failes) to combine the above classes into a single class...
-#include <renderer.h>
-
-#include <shaderClass.h>
-
-#include <texture.h>
-
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
@@ -27,11 +9,19 @@
 #include <vendor/imgui-1.87/example_glfw_opengl3/imgui_impl_opengl3.h>
 #include <Vendor/imgui-1.87/example_glfw_opengl3/imgui_impl_glfw.h>
 
-//#define DEBUG
+#define _USE_MATH_DEFINES
 
-//Playing with Tranforms
+#include <Callbacks.h>				// lazy input handling
+#include <glerror.h>				// OpenGL error handling (#include DEBUG)- because otherwise it sits silently screaming inside
+#include <VertexAttributes.h>		// Contains our object/vertex data (until we handle loading meshes)
+#include <globject.h>				// Object Management class. Feed this class data to create scene objects
+#include <renderer.h>				// Handles 
+#include <shaderClass.h>
+#include <texture.h>
 
 
+
+// #define DEBUG
 
 
 
@@ -39,13 +29,62 @@
 // Mouse position stuff. Just using it for testing. 
 static void  cursorPositionCallback(GLFWwindow* window, double xPos, double yPos);
 double mouseX, mouseY; 
-const int windowW = 800, windowH = 800;
+const int windowW = 1200, windowH = 1200;
+
 
 
 int main() {
 	
+	std::cout.precision(3);
+
+	int segments = 30;
+
+	float segmentDegrees = 360.0 / segments;
+	float SegmentRadians = segmentDegrees * (M_PI / 180);
 
 
+	float radius = 0.5f;
+	float* CircleArray = new float[segments * 2];
+	GLuint* CircleElements = new GLuint[segments];
+
+	//calculate angles based on size
+	std::cout << "Slices: " << segments << std::endl;
+	std::cout << "Segment Degrees: " << segmentDegrees << std::endl;
+	std::cout << "Segment Radians: " << SegmentRadians << std::endl;
+
+
+	for (int i = 0; i < segments; i++)
+	{
+
+		float x = radius * sin(i * SegmentRadians);
+		float y = radius * cos(i * SegmentRadians);
+
+		CircleArray[i * 2] = x;
+		CircleArray[i * 2 + 1] = y;
+		std::cout << "Vertex: " << i << " X: " << x << " Y: " << y << std::endl;
+
+
+	}
+
+	std::cout << std::endl;
+
+	for (int i = 0; i < segments * 2; i += 2)
+	{
+		std::cout << "Vertex: " << i/2 << " X: " << CircleArray[i] << " Y: " << CircleArray[i + 1] << std::endl;
+	}
+
+	for (int i = 0; i <= segments; i++)
+	{
+		CircleElements[i] = i;
+		CircleElements[i+1] = i+1;
+		if ((i + 1) == 16) {
+			CircleElements[i + 1] = 0;
+		}
+
+		std::cout << " X: " << CircleElements[i] << " Y: " << CircleElements[i + 1] << std::endl;
+	}
+
+	
 
 
 	/*============ INITIALIZE STUFF ========================*/
@@ -72,7 +111,7 @@ int main() {
 	glfwSetWindowSizeCallback(window, window_size_callback);		//setup window resize callback
 	glfwSetCursorPosCallback(window, cursorPositionCallback);		//setup cursor position callback
 	
-	const char* glsl_version = "#version 130";
+	const char* glsl_version = "#version 330";
 		// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -118,62 +157,95 @@ int main() {
 	//initialize our renderer... eventually we will move the shader setup into this.
 	Renderer renderer;
 	
-	//Object setup (what we're drawing on the screen
+	
+
+
 	GLOBJECT OBJECT1(Triforce, sizeof(Triforce), TriforceIndicies, sizeof(TriforceIndicies), GL_FLOAT, GL_FALSE, 2, 3, 6);
 	GLOBJECT LINE(line, sizeof(line), GL_FLOAT, GL_FALSE, 1, 2, 2);
 
-	renderer.Draw(OBJECT1, vertexshader);
+
+	GLOBJECT CIRCLE(CircleArray, segments * 2 * sizeof(float), CircleElements, segments * sizeof(float), GL_FLOAT, GL_FALSE, 1, 2, 2);
+
+
+	renderer.Draw(OBJECT1, vertexshader, 0);
 	//Testing the loading of textures. This uses our texture class to load an image with stb_img.  
 	//This is a new overloaded constructor that adds the texture attribute. It just seemed like the simplest way to load the attribute at the time.
 	//We confirmed that the constructor is working appropriately by testing it without the texture specified in the shader driver...
 	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), GL_FLOAT, GL_FALSE, 3, 3, 8, 1);
 	Texture texture("Textures/Jake_small.png");
-	renderer.Draw(TESTOBJECT, textureshader); // Tell our rendere class to use the texture shader for draw functions
+	renderer.Draw(TESTOBJECT, textureshader, 0); // Tell our rendere class to use the texture shader for draw functions
 
-	 //inform glsl shader that we have a texture for it to use. 
+	//inform glsl shader that we have a texture for it to use. 
 	glUniform1i(glGetUniformLocation(textureshader.getID(), "texture1"), 0);
 	
-	bool show_demo_window = true;
+
+
+	
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
+
+	float scaleAmount = 0.5f;
+	bool autoScale = false;
+	
 	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) 
 	{
-		float glfwTime = (float)glfwGetTime();
+
+		//refresh our loop variables
+		float glfwTime = M_PI * sin((float)glfwGetTime());
 		glfwPollEvents(); // get window events (mouse, keypress, etc...)
 		float time = float(glfwGetTime());
 		float greenValue = (sin(time) / 2.0f) + 0.5f;
 		line[0] = 2.0 * mouseX / windowW - 1.0;
 		line[1] = 1.0 - 2.0 * mouseY / windowH;
-		//glLineWidth(1); //must be <= 1. Thick lines is depreciated.
 
+		//clear the scene
+		renderer.clear(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+
+
+		//Display ImGui stuffs
 		ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
 		if (true)
-			//ImGui::ShowDemoWindow(&show_demo_window);
-
-		// 2. Show a simple window that we create ourselves. We use a Begin/End pair to created a named window.
 		{
-			static float f = 0.0f;
+			
 			static int counter = 0;
 
 			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
 
 			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-			ImGui::Checkbox("Demo Window", &show_demo_window);      // Edit bools storing our window open/close state
-			//ImGui::Checkbox("Another Window", &show_another_window);
-
-			ImGui::SliderFloat("float", &glfwTime, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::Checkbox("Auto Scale", &autoScale);      // Edit bools storing our window open/close state
+			ImGui::SliderFloat("Scale", &scaleAmount, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::SliderFloat("Rotation", &glfwTime, M_PI, M_PI);           // Edit 1 float using a slider from 0.0f to 1.0f
 			ImGui::ColorEdit3("clear color", (float*) & clear_color); // Edit 3 floats representing a color
 
 			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
 				counter++;
 			ImGui::SameLine();
 			ImGui::Text("counter = %d", counter);
+			ImGui::Text("Scale = %d", scaleAmount);
 
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			
+			ImVec2 tableEdge(0, 0);
+			ImGui::BeginTable("Table1", 2, 0, tableEdge, 0);
+			ImGui::TableSetupColumn("X Coordinate");
+			ImGui::TableSetupColumn("Y Coordinate");
+			ImGui::TableHeadersRow();
+
+
+			for (int i = 0; i < segments * 2; i += 2)
+			{
+				ImGui::TableNextColumn();
+				ImGui::Text("%f", CircleArray[i]);
+				ImGui::TableNextColumn();
+				ImGui::Text("%f", CircleArray[i+1]);
+
+
+			}
+			ImGui::EndTable();
 			ImGui::End();
 		}
 
@@ -181,7 +253,7 @@ int main() {
 
 
 
-		renderer.clear(clear_color.x, clear_color.y, clear_color.z, clear_color.w);
+		
 
 		textureshader.Activate(); //glUseProgram//GLCall(glActiveTexture(GL_TEXTURE0));
 
@@ -189,7 +261,7 @@ int main() {
 		//rotate and scale the matrix. 	
 		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
 		trans = glm::rotate(trans, glfwTime, glm::vec3(0.0f, 0.0f, 1.0f));
-		float scaleAmount = sin(glfwGetTime());
+		
 		trans = glm::scale(trans, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
 		//Get the "transform" uniform location from the 'textureshader' shader program (see vert shader)
 		unsigned int transformLoc = glGetUniformLocation(textureshader.getID(), "transform");
@@ -206,20 +278,24 @@ int main() {
 		//vertexColorLocation = glGetUniformLocation(shaderProgram.getID(), "ourColor"); //cycle green
 		//glUniform4f(vertexColorLocation, 0.0f, greenValue, 0.0f, 1.0f);
 
+		texture.Bind();
+		renderer.Draw(TESTOBJECT, textureshader, 0);
 		
 
-		texture.Bind();
-		renderer.Draw(TESTOBJECT, textureshader);
-		
 
 		vertexshader.Activate();
-		renderer.Draw(OBJECT1, vertexshader);
+		renderer.Draw(OBJECT1, vertexshader, 0);
 
 		//need to update rendered to accept draw types (line vs element vs array). 
 		LINE.Bind();
 		LINE.Update(line, sizeof(line), 1, 2, 2);
 		glDrawArrays(GL_LINES, 0, 2);
 		LINE.Unbind();
+
+		CIRCLE.Bind();
+		renderer.Draw(CIRCLE, vertexshader, 1);
+		//glDrawArrays(GL_LINES, 0, segments );
+		CIRCLE.Unbind();
 
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -230,18 +306,25 @@ int main() {
 	}
 
 
+	OBJECT1.Delete();
+	LINE.Delete();
+	TESTOBJECT.Delete();
+	CIRCLE.Delete();
+
+	std::cout << "STOPPING... Cleanup starting..." << std::endl;
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
 
-	std::cout << "STOPPING... Cleanup starting..." << std::endl;
-
-	//broken for some reason
-	//shaderProgram.Delete();
-	
-	std::cout << "Goodbye world!";
 	glfwDestroyWindow(window);
 	glfwTerminate();
+
+	//broken for some reason
+	vertexshader.Delete();
+	textureshader.Delete();
+	
+	std::cout << "Goodbye world!";
+
 	return 0;
 
 }

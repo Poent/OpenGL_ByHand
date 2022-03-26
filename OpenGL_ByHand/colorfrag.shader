@@ -4,7 +4,7 @@ out vec4 FragColor;
 
 //expect input of 3 vectors for RGB
 in vec3 vertexColor;
-in vec2 TexCoord;
+
 
 //uniform vec4 vertexColor;
 uniform sampler2D ourTexture;

@@ -8,7 +8,7 @@
 class Renderer
 {
 public:
-	void Draw( GLOBJECT& GLO,  Shader& shader) const;
+	void Draw(GLOBJECT& GLO, Shader& shader, int type) const;
 	void clear(float red, float green, float blue, float alpha) const;
 
 private:

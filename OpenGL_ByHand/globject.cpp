@@ -50,7 +50,17 @@ GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndic
 }
 
 
-//Definition without Element Array index
+/// <summary>
+/// Object Constructor withour Element Array.
+/// Frequently used for Lines based drawing
+/// </summary>
+/// <param name="vertices"> Pass float array of verticies </param>
+/// <param name="vert_size"> sise of the array in bytes </param>
+/// <param name="ArrayType"> generally type if float/GL_FLOAT </param>
+/// <param name="Normalized">Normalized GL_TRUE or GL_FALSE</param>
+/// <param name="attributeCount">Total number of attribute types</param>
+/// <param name="attributeSize">sise per attribute</param>
+/// <param name="stride">distance between attributes</param>
 GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLenum ArrayType, GLboolean Normalized, int attributeCount, int attributeSize, int stride)
 	: a_count(attributeCount)
 {
