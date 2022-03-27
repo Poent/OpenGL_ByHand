@@ -1,5 +1,6 @@
 
-
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 
 // This is free and unencumbered software released into the public domain.
 // 
@@ -57,8 +58,10 @@ void GLClearError()
 
 bool GLLogCall(const char* function, const char* file, int line)
 {
-    while (GLenum error = glGetError()) {
-        std::cout << "Error: [ " << error << " ]: " << function << " " << file << ":" << line << std::endl;
+    if (GLenum error = glGetError()) {
+        while (GLenum error = glGetError()) {
+            std::cout << "Error: [ " << error << " ]: " << function << " " << file << ":" << line << std::endl;
+        }
         return false;
     }
 
@@ -75,7 +78,7 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
     const char* _source;
     const char* _type;
     const char* _severity;
-    const char* _line;
+    //const char* _line;
 
     switch (source) {
     case GL_DEBUG_SOURCE_API:
@@ -167,7 +170,7 @@ void APIENTRY GLDebugMessageCallback(GLenum source, GLenum type, GLuint id,
     // + Adds __debugbreak if _DEBUG is defined (automatic in visual studio)
     // note: __debugbreak is specific for MSVC, won't work with gcc/clang
     // -> in that case remove it and manually set breakpoints
-    if (_severity != "NOTIFICATION") {
+    if (strcmp(_severity, "NOTIFICATION")) {
         printf("OpenGL error [%d]: %s of %s severity, raised from %s: %s\n",
             id, _type, _severity, _source, msg);
 #ifdef _DEBUG

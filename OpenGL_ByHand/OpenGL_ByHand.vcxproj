@@ -116,7 +116,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>GLEW_STATIC</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\OpenGL_ByHand\Dependencies\GLEW\include;$(SolutionDir)\OpenGL_ByHand\Dependencies\GLFW\include;$(SolutionDir)OpenGL_ByHand;$(SolutionDir)Dependencies\;$(SolutionDir)\OpenGL_ByHand\Dependencies\glm;$(SolutionDir)\Resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\OpenGL_ByHand\Vendor\imgui-docking\backends;$(SolutionDir)\OpenGL_ByHand\Vendor\imgui-docking;$(SolutionDir)\OpenGL_ByHand\Dependencies\GLEW\include;$(SolutionDir)\OpenGL_ByHand\Dependencies\GLFW\include;$(SolutionDir)OpenGL_ByHand;$(SolutionDir)Dependencies\;$(SolutionDir)\OpenGL_ByHand\Dependencies\glm;$(SolutionDir)\Resources;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,13 +152,13 @@
     <ClCompile Include="shaderClass.cpp" />
     <ClCompile Include="stb_image.cpp" />
     <ClCompile Include="texture.cpp" />
-    <ClCompile Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_glfw.cpp" />
-    <ClCompile Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_opengl3.cpp" />
-    <ClCompile Include="Vendor\imgui-1.87\imgui.cpp" />
-    <ClCompile Include="Vendor\imgui-1.87\imgui_demo.cpp" />
-    <ClCompile Include="Vendor\imgui-1.87\imgui_draw.cpp" />
-    <ClCompile Include="Vendor\imgui-1.87\imgui_tables.cpp" />
-    <ClCompile Include="Vendor\imgui-1.87\imgui_widgets.cpp" />
+    <ClCompile Include="Vendor\imgui-docking\backends\imgui_impl_glfw.cpp" />
+    <ClCompile Include="Vendor\imgui-docking\backends\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="Vendor\imgui-docking\imgui.cpp" />
+    <ClCompile Include="Vendor\imgui-docking\imgui_demo.cpp" />
+    <ClCompile Include="Vendor\imgui-docking\imgui_draw.cpp" />
+    <ClCompile Include="Vendor\imgui-docking\imgui_tables.cpp" />
+    <ClCompile Include="Vendor\imgui-docking\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Callbacks.h" />
@@ -168,25 +168,27 @@
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="shaderClass.h" />
     <ClInclude Include="texture.h" />
-    <ClInclude Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_glfw.h" />
-    <ClInclude Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_opengl3.h" />
-    <ClInclude Include="Vendor\imgui-1.87\example_glfw_opengl3\imgui_impl_opengl3_loader.h" />
-    <ClInclude Include="Vendor\imgui-1.87\imconfig.h" />
-    <ClInclude Include="Vendor\imgui-1.87\imgui.h" />
-    <ClInclude Include="Vendor\imgui-1.87\imgui_internal.h" />
-    <ClInclude Include="Vendor\imgui-1.87\imstb_rectpack.h" />
-    <ClInclude Include="Vendor\imgui-1.87\imstb_textedit.h" />
-    <ClInclude Include="Vendor\imgui-1.87\imstb_truetype.h" />
+    <ClInclude Include="Vendor\imgui-docking\backends\imgui_impl_glfw.h" />
+    <ClInclude Include="Vendor\imgui-docking\backends\imgui_impl_opengl3.h" />
+    <ClInclude Include="Vendor\imgui-docking\backends\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="Vendor\imgui-docking\imconfig.h" />
+    <ClInclude Include="Vendor\imgui-docking\imgui.h" />
+    <ClInclude Include="Vendor\imgui-docking\imgui_internal.h" />
+    <ClInclude Include="Vendor\imgui-docking\imstb_rectpack.h" />
+    <ClInclude Include="Vendor\imgui-docking\imstb_textedit.h" />
+    <ClInclude Include="Vendor\imgui-docking\imstb_truetype.h" />
     <ClInclude Include="VertexAttributes.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="colorfrag.shader" />
     <None Include="colorvert.shader" />
+    <None Include="imgui.ini" />
     <None Include="texfrag.shader" />
     <None Include="texvert.shader" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />
+    <Text Include="Vendor\imgui-docking\LICENSE.txt" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Textures\awesomeface.png" />

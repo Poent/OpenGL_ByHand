@@ -5,6 +5,8 @@
 // Calls createShader to setup shader shader IDs. compileShader takes string previously read from shader source
 // txt file and compiles either a vertexShader or fragment shader depending on parameters. 
 
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 
 Shader::Shader(const char* vertexFile, const char* fragmentFile)
 {
@@ -103,7 +105,8 @@ void Shader::Activate()
 
 void Shader::Delete() 
 {
-	glDeleteShader(shader);
+	//This is already happening in CompileShader after linking.... No need.. Maybe need to unlink?
+	glDeleteProgram(shader);
 }
 
 GLuint Shader::getID() 

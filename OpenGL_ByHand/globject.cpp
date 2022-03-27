@@ -2,6 +2,8 @@
 #include <glerror.h>
 
 //#define DEBUG
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 
 
 GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndices, GLsizeiptr eind_size, GLenum ArrayType, GLboolean Normalized, int attributeCount, int attributeSize, int stride)
@@ -39,7 +41,7 @@ GLOBJECT::GLOBJECT(GLfloat* vertices, GLsizeiptr vert_size, GLuint* elementIndic
 			attributeSize,								// Specifies the number of components per generic vertex attribute. Must be 1, 2, 3, 4
 			ArrayType,									// Specify attribute component types
 			Normalized,									// Specifies if the data should be "Normalized"
-			sizeof(float) * stride,						// Byte offset between consecutive attributes within the array
+			sizeof(float) * (float)stride,						// Byte offset between consecutive attributes within the array
 			(void*)(attributeSize * i * sizeof(float))		// Offset specifies where the attribute begins in the array. 
 		));
 

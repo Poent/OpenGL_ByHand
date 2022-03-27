@@ -1,3 +1,6 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
+
 #include <GL\glew.h>		// automagically links system-specific OpenGL implementations (eg, from your video driver)
 #include <GLFW\glfw3.h>		// Cross platform window handler. will probably replace with lmgui later
 
@@ -5,9 +8,10 @@
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
-#include <Vendor/imgui-1.87/imgui.h>
-#include <vendor/imgui-1.87/example_glfw_opengl3/imgui_impl_opengl3.h>
-#include <Vendor/imgui-1.87/example_glfw_opengl3/imgui_impl_glfw.h>
+#include <Vendor/imgui-docking/imgui.h>
+#include <vendor/imgui-docking/backends/imgui_impl_opengl3.h>
+#include <Vendor/imgui-docking/backends/imgui_impl_glfw.h>
+
 
 #define _USE_MATH_DEFINES
 
@@ -21,7 +25,7 @@
 
 
 
-// #define DEBUG
+#define DEBUG
 
 
 
@@ -35,12 +39,13 @@ const int windowW = 1200, windowH = 1200;
 
 int main() {
 	
+	//MOVE TO OBJECT CREATION CLASS
+
 	std::cout.precision(3);
 
 	int segments = 30;
-
-	float segmentDegrees = 360.0 / segments;
-	float SegmentRadians = segmentDegrees * (M_PI / 180);
+	float segmentDegrees = 360.0f / segments;
+	float SegmentRadians = segmentDegrees * (M_PI / 180.0f);
 
 
 	float radius = 0.5f;
@@ -73,15 +78,15 @@ int main() {
 		std::cout << "Vertex: " << i/2 << " X: " << CircleArray[i] << " Y: " << CircleArray[i + 1] << std::endl;
 	}
 
-	for (int i = 0; i <= segments; i++)
+	for (int i = 0; i < segments; i++)
 	{
 		CircleElements[i] = i;
-		CircleElements[i+1] = i+1;
+		CircleElements[i+1] = i+1; //-V557
 		if ((i + 1) == 16) {
 			CircleElements[i + 1] = 0;
 		}
 
-		std::cout << " X: " << CircleElements[i] << " Y: " << CircleElements[i + 1] << std::endl;
+		std::cout << " X: " << CircleElements[i] << " Y: " << CircleElements[i + 1] << std::endl; //-V557
 	}
 
 	
@@ -111,11 +116,15 @@ int main() {
 	glfwSetWindowSizeCallback(window, window_size_callback);		//setup window resize callback
 	glfwSetCursorPosCallback(window, cursorPositionCallback);		//setup cursor position callback
 	
-	const char* glsl_version = "#version 330";
+	const char* glsl_version = "#version 450";
 		// Setup Dear ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
+	//io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -167,26 +176,26 @@ int main() {
 	GLOBJECT CIRCLE(CircleArray, segments * 2 * sizeof(float), CircleElements, segments * sizeof(float), GL_FLOAT, GL_FALSE, 1, 2, 2);
 
 
-	renderer.Draw(OBJECT1, vertexshader, 0);
 	//Testing the loading of textures. This uses our texture class to load an image with stb_img.  
 	//This is a new overloaded constructor that adds the texture attribute. It just seemed like the simplest way to load the attribute at the time.
 	//We confirmed that the constructor is working appropriately by testing it without the texture specified in the shader driver...
 	GLOBJECT TESTOBJECT(rect, sizeof(rect), elements, sizeof(elements), GL_FLOAT, GL_FALSE, 3, 3, 8, 1);
 	Texture texture("Textures/Jake_small.png");
-	renderer.Draw(TESTOBJECT, textureshader, 0); // Tell our rendere class to use the texture shader for draw functions
+	
 
 	//inform glsl shader that we have a texture for it to use. 
 	glUniform1i(glGetUniformLocation(textureshader.getID(), "texture1"), 0);
 	
 
-
+	glUseProgram(0);
 	
 	ImVec4 clear_color = ImVec4(0.45f, 0.55f, 0.60f, 1.00f);
 
 
 	float scaleAmount = 0.5f;
 	bool autoScale = false;
-	
+
+
 	std::cout << "Entering Main Loop..." << std::endl;
 	while (!glfwWindowShouldClose(window)) 
 	{
@@ -208,12 +217,18 @@ int main() {
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		if (true)
+		bool show_demo_window = true;
+		
+
+		if (ImGui::IsItemVisible)
 		{
-			
+			if (show_demo_window)
+				ImGui::ShowDemoWindow(&show_demo_window);
+
 			static int counter = 0;
 
 			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+
 
 			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
 			ImGui::Checkbox("Auto Scale", &autoScale);      // Edit bools storing our window open/close state
@@ -229,7 +244,7 @@ int main() {
 
 			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 			
-			ImVec2 tableEdge(0, 0);
+			/*ImVec2 tableEdge(0, 0);
 			ImGui::BeginTable("Table1", 2, 0, tableEdge, 0);
 			ImGui::TableSetupColumn("X Coordinate");
 			ImGui::TableSetupColumn("Y Coordinate");
@@ -245,7 +260,8 @@ int main() {
 
 
 			}
-			ImGui::EndTable();
+			ImGui::EndTable();*/
+
 			ImGui::End();
 		}
 
@@ -286,15 +302,17 @@ int main() {
 		vertexshader.Activate();
 		renderer.Draw(OBJECT1, vertexshader, 0);
 
+		
 		//need to update rendered to accept draw types (line vs element vs array). 
 		LINE.Bind();
 		LINE.Update(line, sizeof(line), 1, 2, 2);
 		glDrawArrays(GL_LINES, 0, 2);
 		LINE.Unbind();
+		
 
 		CIRCLE.Bind();
 		renderer.Draw(CIRCLE, vertexshader, 1);
-		//glDrawArrays(GL_LINES, 0, segments );
+		glDrawArrays(GL_LINES, 0, segments );
 		CIRCLE.Unbind();
 
 		ImGui::Render();
@@ -305,6 +323,7 @@ int main() {
 
 	}
 
+	//broken for some reason
 
 	OBJECT1.Delete();
 	LINE.Delete();
@@ -319,7 +338,6 @@ int main() {
 	glfwDestroyWindow(window);
 	glfwTerminate();
 
-	//broken for some reason
 	vertexshader.Delete();
 	textureshader.Delete();
 	
