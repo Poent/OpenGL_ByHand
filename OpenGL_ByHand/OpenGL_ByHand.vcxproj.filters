@@ -52,25 +52,25 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Vendor\imgui-docking\imgui.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vendor\imgui-docking\imgui_draw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vendor\imgui-docking\imgui_tables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vendor\imgui-docking\imgui_widgets.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vendor\imgui-docking\backends\imgui_impl_glfw.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Vendor\imgui-docking\backends\imgui_impl_opengl3.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Vendor\imgui</Filter>
     </ClCompile>
     <ClCompile Include="Vendor\imgui-docking\imgui_demo.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendor\imgui-docking\imgui_draw.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendor\imgui-docking\backends\imgui_impl_glfw.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendor\imgui-docking\backends\imgui_impl_opengl3.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendor\imgui-docking\imgui_tables.cpp">
+      <Filter>Vendor\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Vendor\imgui-docking\imgui_widgets.cpp">
+      <Filter>Vendor\imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -98,32 +98,32 @@
     <ClInclude Include="texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Vendor\imgui-docking\imgui.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Vendor\imgui-docking\imconfig.h">
-      <Filter>Header Files</Filter>
+      <Filter>Vendor\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Vendor\imgui-docking\imgui_internal.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vendor\imgui-docking\imstb_rectpack.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vendor\imgui-docking\imstb_textedit.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Vendor\imgui-docking\imstb_truetype.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="Vendor\imgui-docking\imgui.h">
+      <Filter>Vendor\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Vendor\imgui-docking\backends\imgui_impl_glfw.h">
-      <Filter>Header Files</Filter>
+      <Filter>Vendor\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Vendor\imgui-docking\backends\imgui_impl_opengl3.h">
-      <Filter>Header Files</Filter>
+      <Filter>Vendor\imgui</Filter>
     </ClInclude>
     <ClInclude Include="Vendor\imgui-docking\backends\imgui_impl_opengl3_loader.h">
-      <Filter>Header Files</Filter>
+      <Filter>Vendor\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\imgui-docking\imgui_internal.h">
+      <Filter>Vendor\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\imgui-docking\imstb_rectpack.h">
+      <Filter>Vendor\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\imgui-docking\imstb_textedit.h">
+      <Filter>Vendor\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Vendor\imgui-docking\imstb_truetype.h">
+      <Filter>Vendor\imgui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -140,6 +140,9 @@
       <Filter>Resource Files\Shaders</Filter>
     </None>
     <None Include="imgui.ini" />
+    <None Include="shapeGenerator. h">
+      <Filter>Header Files</Filter>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Text Include="README.txt" />

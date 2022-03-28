@@ -25,7 +25,7 @@
 
 
 
-#define DEBUG
+//#define DEBUG
 
 
 
@@ -121,6 +121,7 @@ int main() {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;       // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
@@ -135,6 +136,7 @@ int main() {
 	// Setup Platform/Renderer backends
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init(glsl_version);
+	const float TEXT_BASE_HEIGHT = ImGui::GetTextLineHeightWithSpacing();
 
 	//glViewport(0, 0, windowW, windowH); //set default viewport Should move value to a const uint... can then use window size callback. 
 
@@ -193,7 +195,9 @@ int main() {
 
 
 	float scaleAmount = 0.5f;
+	float rotateAmount = 0.0f;
 	bool autoScale = false;
+	bool autoRotate = false;
 
 
 	std::cout << "Entering Main Loop..." << std::endl;
@@ -227,48 +231,71 @@ int main() {
 
 			static int counter = 0;
 
-			ImGui::Begin("Hello, world!");                          // Create a window called "Hello, world!" and append into it.
+			if (ImGui::Begin("Hello, world!")) {
+
+			                          // Create a window called "Hello, world!" and append into it.
 
 
-			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-			ImGui::Checkbox("Auto Scale", &autoScale);      // Edit bools storing our window open/close state
-			ImGui::SliderFloat("Scale", &scaleAmount, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-			ImGui::SliderFloat("Rotation", &glfwTime, M_PI, M_PI);           // Edit 1 float using a slider from 0.0f to 1.0f
-			ImGui::ColorEdit3("clear color", (float*) & clear_color); // Edit 3 floats representing a color
+				ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+				ImGui::Checkbox("Auto Scale", &autoScale);      // Edit bools storing our window open/close state
+				ImGui::Checkbox("Auto Rotate", &autoRotate);
+				ImGui::SliderFloat("Scale", &scaleAmount, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+				ImGui::SliderFloat("Rotation", &rotateAmount, -M_PI, M_PI);           // Edit 1 float using a slider from 0.0f to 1.0f
+				ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
-			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-				counter++;
-			ImGui::SameLine();
-			ImGui::Text("counter = %d", counter);
-			ImGui::Text("Scale = %d", scaleAmount);
+				if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+					counter++;
+				ImGui::SameLine();
+				ImGui::Text("counter = %d", counter);
+				ImGui::Text("Scale = %f", scaleAmount);
 
-			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-			
-			/*ImVec2 tableEdge(0, 0);
-			ImGui::BeginTable("Table1", 2, 0, tableEdge, 0);
-			ImGui::TableSetupColumn("X Coordinate");
-			ImGui::TableSetupColumn("Y Coordinate");
-			ImGui::TableHeadersRow();
+				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+				//*
+				if (ImGui::CollapsingHeader("Circle Vertices")) {
+					//static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit;
+					static ImGuiTableFlags flags = 
+						ImGuiTableFlags_ScrollY			|
+						ImGuiTableFlags_RowBg			|
+						ImGuiTableFlags_Borders			|
+						ImGuiTableFlags_Reorderable		|
+						ImGuiTableFlags_SizingFixedFit	|
+						ImGuiTableFlags_SizingFixedSame |
+						ImGuiTableFlags_NoHostExtendX;
+					ImVec2 outer_size = ImVec2(200.0f, TEXT_BASE_HEIGHT * 32);
+					if (ImGui::BeginTable("Table1", 2, flags, outer_size)) 
+					{
+						ImGui::TableSetupScrollFreeze(0, 1);
+						ImGui::TableSetupColumn("X Pos");
+						ImGui::TableSetupColumn("Y Pos");
+						ImGui::TableHeadersRow();
 
 
-			for (int i = 0; i < segments * 2; i += 2)
-			{
-				ImGui::TableNextColumn();
-				ImGui::Text("%f", CircleArray[i]);
-				ImGui::TableNextColumn();
-				ImGui::Text("%f", CircleArray[i+1]);
+						for (int i = 0; i < segments * 2; i += 2)
+						{
+							ImGui::TableNextRow();
+							ImGui::TableNextColumn();
+							ImGui::Text("%f", CircleArray[i]);
+							ImGui::TableNextColumn();
+							ImGui::Text("%f", CircleArray[i + 1]);
 
 
-			}
-			ImGui::EndTable();*/
-
+						}
+						ImGui::EndTable();
+					}
+					
+				}
+		}
 			ImGui::End();
 		}
 
 
 
-
-
+		if (autoRotate) 
+			rotateAmount = glfwTime;
+		
+		if (autoScale)
+			scaleAmount = sin((float)glfwGetTime());
 		
 
 		textureshader.Activate(); //glUseProgram//GLCall(glActiveTexture(GL_TEXTURE0));
@@ -276,7 +303,7 @@ int main() {
 		glm::mat4 trans = glm::mat4(1.0f); //Initialize our translation identity matrix (diagonal 1's)
 		//rotate and scale the matrix. 	
 		trans = glm::translate(trans, glm::vec3(0.5f, -0.5f, 0.0f));
-		trans = glm::rotate(trans, glfwTime, glm::vec3(0.0f, 0.0f, 1.0f));
+		trans = glm::rotate(trans, rotateAmount, glm::vec3(0.0f, 0.0f, 1.0f));
 		
 		trans = glm::scale(trans, glm::vec3(scaleAmount, scaleAmount, scaleAmount));
 		//Get the "transform" uniform location from the 'textureshader' shader program (see vert shader)
