@@ -1,8 +1,8 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++, C#, and Java: https://pvs-studio.com
 
-#include <GL\glew.h>		// automagically links system-specific OpenGL implementations (eg, from your video driver)
-#include <GLFW\glfw3.h>		// Cross platform window handler. will probably replace with lmgui later
+#include <GL/glew.h>		// automagically links system-specific OpenGL implementations (eg, from your video driver)
+#include <GLFW/glfw3.h>		// Cross platform window handler. will probably replace with lmgui later
 
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
@@ -25,6 +25,7 @@
 
 
 
+
 //#define DEBUG
 
 
@@ -43,6 +44,7 @@ int main() {
 
 	std::cout.precision(3);
 
+	//*
 	int segments = 30;
 	float segmentDegrees = 360.0f / segments;
 	float SegmentRadians = segmentDegrees * (M_PI / 180.0f);
@@ -88,8 +90,10 @@ int main() {
 
 		std::cout << " X: " << CircleElements[i] << " Y: " << CircleElements[i + 1] << std::endl; //-V557
 	}
+	//*/
 
-	
+	//SHAPE CIRCLE1(circle, 0.5f, 30);
+
 
 
 	/*============ INITIALIZE STUFF ========================*/
@@ -224,70 +228,71 @@ int main() {
 		bool show_demo_window = true;
 		
 
-		if (ImGui::IsItemVisible)
+
+		if (show_demo_window)
+			ImGui::ShowDemoWindow(&show_demo_window);
+
+		static int counter = 0;
+
+		if (ImGui::Begin("Hello, world!"))
 		{
-			if (show_demo_window)
-				ImGui::ShowDemoWindow(&show_demo_window);
 
-			static int counter = 0;
-
-			if (ImGui::Begin("Hello, world!")) {
-
-			                          // Create a window called "Hello, world!" and append into it.
+			// Create a window called "Hello, world!" and append into it.
 
 
-				ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
-				ImGui::Checkbox("Auto Scale", &autoScale);      // Edit bools storing our window open/close state
-				ImGui::Checkbox("Auto Rotate", &autoRotate);
-				ImGui::SliderFloat("Scale", &scaleAmount, 0.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
-				ImGui::SliderFloat("Rotation", &rotateAmount, -M_PI, M_PI);           // Edit 1 float using a slider from 0.0f to 1.0f
-				ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
+			ImGui::Text("This is some useful text.");               // Display some text (you can use a format strings too)
+			ImGui::Checkbox("Auto Scale", &autoScale);      // Edit bools storing our window open/close state
+			ImGui::Checkbox("Auto Rotate", &autoRotate);
+			ImGui::SliderFloat("Scale", &scaleAmount, -1.0f, 1.0f);            // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::SliderFloat("Rotation", &rotateAmount, -M_PI, M_PI);           // Edit 1 float using a slider from 0.0f to 1.0f
+			ImGui::ColorEdit3("clear color", (float*)&clear_color); // Edit 3 floats representing a color
 
-				if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
-					counter++;
-				ImGui::SameLine();
-				ImGui::Text("counter = %d", counter);
-				ImGui::Text("Scale = %f", scaleAmount);
+			if (ImGui::Button("Button"))                            // Buttons return true when clicked (most widgets return true when edited/activated)
+				counter++;
+			ImGui::SameLine();
+			ImGui::Text("counter = %d", counter);
+			ImGui::Text("Scale = %f", scaleAmount);
 
-				ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-				//*
-				if (ImGui::CollapsingHeader("Circle Vertices")) {
-					//static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit;
-					static ImGuiTableFlags flags = 
-						ImGuiTableFlags_ScrollY			|
-						ImGuiTableFlags_RowBg			|
-						ImGuiTableFlags_Borders			|
-						ImGuiTableFlags_Reorderable		|
-						ImGuiTableFlags_SizingFixedFit	|
-						ImGuiTableFlags_SizingFixedSame |
-						ImGuiTableFlags_NoHostExtendX;
-					ImVec2 outer_size = ImVec2(200.0f, TEXT_BASE_HEIGHT * 32);
-					if (ImGui::BeginTable("Table1", 2, flags, outer_size)) 
+			//*
+			if (ImGui::CollapsingHeader("Circle Vertices")) {
+				//static ImGuiTableFlags flags = ImGuiTableFlags_ScrollY | ImGuiTableFlags_Borders | ImGuiTableFlags_RowBg | ImGuiTableFlags_SizingFixedFit;
+				static ImGuiTableFlags flags =
+					ImGuiTableFlags_ScrollY |
+					ImGuiTableFlags_RowBg |
+					ImGuiTableFlags_Borders |
+					ImGuiTableFlags_Reorderable |
+					ImGuiTableFlags_SizingFixedFit |
+					ImGuiTableFlags_SizingFixedSame |
+					ImGuiTableFlags_NoHostExtendX;
+				ImVec2 outer_size = ImVec2(200.0f, TEXT_BASE_HEIGHT * 32);
+				if (ImGui::BeginTable("Table1", 2, flags, outer_size))
+				{
+					ImGui::TableSetupScrollFreeze(0, 1);
+					ImGui::TableSetupColumn("X Pos");
+					ImGui::TableSetupColumn("Y Pos");
+					ImGui::TableHeadersRow();
+
+
+					for (int i = 0; i < segments * 2; i += 2)
 					{
-						ImGui::TableSetupScrollFreeze(0, 1);
-						ImGui::TableSetupColumn("X Pos");
-						ImGui::TableSetupColumn("Y Pos");
-						ImGui::TableHeadersRow();
+						ImGui::TableNextRow();
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", CircleArray[i]);
+						ImGui::TableNextColumn();
+						ImGui::Text("%f", CircleArray[i + 1]);
 
 
-						for (int i = 0; i < segments * 2; i += 2)
-						{
-							ImGui::TableNextRow();
-							ImGui::TableNextColumn();
-							ImGui::Text("%f", CircleArray[i]);
-							ImGui::TableNextColumn();
-							ImGui::Text("%f", CircleArray[i + 1]);
-
-
-						}
-						ImGui::EndTable();
 					}
-					
+					ImGui::EndTable();
 				}
+
+			}
 		}
-			ImGui::End();
-		}
+	
+		ImGui::End();
+		
 
 
 
@@ -339,7 +344,7 @@ int main() {
 
 		CIRCLE.Bind();
 		renderer.Draw(CIRCLE, vertexshader, 1);
-		glDrawArrays(GL_LINES, 0, segments );
+		glDrawArrays(GL_LINES, 0, segments);
 		CIRCLE.Unbind();
 
 		ImGui::Render();
